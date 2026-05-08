@@ -1,10 +1,7 @@
-import { Search, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { SearchForm } from "@/components/SearchForm";
 
 /**
- * Landing hero — headline, tagline, search affordance and a trust strip.
- * The search form is rendered as a disabled placeholder until Day 4,
- * when it becomes a real client component wired to /api/analyze.
+ * Landing hero — headline, tagline, search form and a trust strip.
  */
 export function Hero() {
   return (
@@ -41,28 +38,8 @@ export function Hero() {
           build.
         </p>
 
-        {/* Search affordance — fully wired on Day 4 */}
         <div className="mt-10 w-full max-w-xl">
-          <div className="flex items-center gap-2 rounded-2xl border border-border bg-card p-2 shadow-lg shadow-primary/5">
-            <Search
-              className="ml-3 h-4 w-4 shrink-0 text-muted-foreground"
-              aria-hidden="true"
-            />
-            <input
-              type="text"
-              placeholder="e.g. poojakannanv"
-              className="flex-1 bg-transparent px-2 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-              disabled
-              aria-label="GitHub username"
-            />
-            <Button size="default" disabled>
-              <Sparkles className="h-4 w-4" />
-              Analyse
-            </Button>
-          </div>
-          <p className="mt-3 text-xs text-muted-foreground">
-            Wiring up to the GitHub API on Day 4.
-          </p>
+          <SearchForm />
         </div>
 
         {/* Trust strip — small but adds credibility */}
