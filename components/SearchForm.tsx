@@ -9,27 +9,30 @@ import { validateGithubUsername } from "@/lib/validate";
 interface SearchFormProps {
   /** Optional initial value, e.g. preset from URL params later */
   defaultValue?: string;
-  /** Optional submit hook — wired up properly on Day 5 */
+  /** Called with the validated username when the user submits */
   onSubmitUsername?: (username: string) => void;
+  /** Externally-controlled disabled state (e.g. while parent is fetching) */
+  disabled?: boolean;
 }
 
 /**
- * Client component for entering a GitHub username.
- * Day 4 scope: validation, loading state, accessible error display.
- * Day 5 will swap the simulated submit for a real /api/analyze call.
+ * Pure form component — validates input and emits the cleaned username.
+ * Fetching, loading state and result rendering live in the parent
+ * (`AnalyzeSection`) so this stays reusable.
  */
-export function SearchForm({ defaultValue = "", onSubmitUsername }: SearchFormProps) {
+export function SearchForm({
+  defaultValue = "",
+  onSubmitUsername,
+  disabled = false,
+}: SearchFormProps) {
   const inputId = useId();
   const errorId = useId();
 
   const [value, setValue] = useState(defaultValue);
   const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submittedFor, setSubmittedFor] = useState<string | null>(null);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmittedFor(null);
 
     const result = validateGithubUsername(value);
     if (!result.valid) {
@@ -37,15 +40,7 @@ export function SearchForm({ defaultValue = "", onSubmitUsername }: SearchFormPr
       return;
     }
     setError(null);
-    setIsSubmitting(true);
-
-    // Day 4 placeholder: simulate latency, then surface a "ready for Day 5" message.
-    // Day 5 will replace this block with: router.push(`/${result.value}`)
-    window.setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmittedFor(result.value);
-      onSubmitUsername?.(result.value);
-    }, 600);
+    onSubmitUsername?.(result.value);
   }
 
   const hasError = Boolean(error);
@@ -87,33 +82,26 @@ export function SearchForm({ defaultValue = "", onSubmitUsername }: SearchFormPr
           onChange={(event) => {
             setValue(event.target.value);
             if (error) setError(null);
-            if (submittedFor) setSubmittedFor(null);
           }}
-          disabled={isSubmitting}
+          disabled={disabled}
           aria-invalid={hasError}
           aria-describedby={hasError ? errorId : undefined}
           className="flex-1 bg-transparent px-2 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-60"
         />
-        <Button type="submit" size="default" disabled={isSubmitting}>
-          {isSubmitting ? (
+        <Button type="submit" size="default" disabled={disabled}>
+          {disabled ? (
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
           ) : (
             <Sparkles className="h-4 w-4" aria-hidden="true" />
           )}
-          {isSubmitting ? "Analysing…" : "Analyse"}
+          {disabled ? "Analysing…" : "Analyse"}
         </Button>
       </div>
 
-      {/* Status row — error OR Day-5 acknowledgement OR helper text */}
       <div className="mt-3 min-h-[1.25rem] text-xs">
         {hasError ? (
           <p id={errorId} role="alert" className="text-destructive">
             {error}
-          </p>
-        ) : submittedFor ? (
-          <p className="text-emerald-600">
-            ✓ <span className="font-mono">{submittedFor}</span> looks valid —
-            full analysis wires up on Day 5.
           </p>
         ) : (
           <p className="text-muted-foreground">

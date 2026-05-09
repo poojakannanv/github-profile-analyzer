@@ -1,4 +1,4 @@
-import { SearchForm } from "@/components/SearchForm";
+import { AnalyzeSection } from "@/components/AnalyzeSection";
 
 /**
  * Landing hero — headline, tagline, search form and a trust strip.
@@ -39,7 +39,7 @@ export function Hero() {
         </p>
 
         <div className="mt-10 w-full max-w-xl">
-          <SearchForm />
+          <AnalyzeSection />
         </div>
 
         {/* Trust strip — small but adds credibility */}
