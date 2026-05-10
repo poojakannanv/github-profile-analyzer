@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GithubFetchError, getUserProfile } from "@/lib/github";
+import { GithubFetchError, getUserProfile, getUserRepos } from "@/lib/github";
 import { validateGithubUsername } from "@/lib/validate";
 
 export const runtime = "nodejs";
@@ -12,10 +12,11 @@ interface AnalyzeRequestBody {
 /**
  * POST /api/analyze
  * Body: { username: string }
- * Returns: { profile: GithubProfile } | { error: string }
+ * Returns: { profile: GithubProfile, topRepos: GithubRepo[] } | { error: string }
  *
- * Day 5 scope: profile only.
- * Day 6 will extend the response to include top repos.
+ * Day 5: profile.
+ * Day 6: + top repos (this commit).
+ * Day 8+: + language stats and AI-generated UK match report.
  */
 export async function POST(request: Request) {
   let body: AnalyzeRequestBody;
@@ -42,8 +43,13 @@ export async function POST(request: Request) {
   }
 
   try {
-    const profile = await getUserProfile(validation.value);
-    return NextResponse.json({ profile });
+    // Fetch profile and repos in parallel — saves ~one round-trip of latency.
+    const [profile, topRepos] = await Promise.all([
+      getUserProfile(validation.value),
+      getUserRepos(validation.value),
+    ]);
+
+    return NextResponse.json({ profile, topRepos });
   } catch (err) {
     if (err instanceof GithubFetchError) {
       return NextResponse.json({ error: err.message }, { status: err.status });

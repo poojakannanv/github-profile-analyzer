@@ -76,8 +76,8 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
       </dl>
 
       <p className="mt-6 rounded-lg border border-dashed border-border bg-muted/40 px-4 py-3 text-xs text-muted-foreground">
-        🔮 Day 6 adds top repositories · Day 7 ships the full ProfileCard ·
-        Day 12 plugs in the AI report.
+        🔮 Day 7 ships the full ProfileCard · Day 9 adds the language breakdown
+        chart · Day 12 plugs in the AI report.
       </p>
     </article>
   );

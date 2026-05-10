@@ -4,13 +4,21 @@ import { useState } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { SearchForm } from "@/components/SearchForm";
 import { ProfilePreview } from "@/components/ProfilePreview";
-import type { GithubProfile } from "@/types/github";
+import { TopReposList } from "@/components/TopReposList";
+import type { GithubProfile, GithubRepo } from "@/types/github";
+
+interface AnalyzeSuccess {
+  profile: GithubProfile;
+  topRepos: GithubRepo[];
+}
 
 type Status =
   | { kind: "idle" }
   | { kind: "loading"; username: string }
   | { kind: "error"; message: string }
-  | { kind: "success"; profile: GithubProfile };
+  | ({ kind: "success" } & AnalyzeSuccess);
+
+type AnalyzeResponse = AnalyzeSuccess | { error: string };
 
 /**
  * Client wrapper that owns the search → fetch → display flow.
@@ -29,17 +37,20 @@ export function AnalyzeSection() {
         body: JSON.stringify({ username }),
       });
 
-      const data = (await res.json()) as
-        | { profile: GithubProfile }
-        | { error: string };
+      const data = (await res.json()) as AnalyzeResponse;
 
       if (!res.ok || "error" in data) {
-        const message = "error" in data ? data.error : `Request failed (${res.status}).`;
+        const message =
+          "error" in data ? data.error : `Request failed (${res.status}).`;
         setStatus({ kind: "error", message });
         return;
       }
 
-      setStatus({ kind: "success", profile: data.profile });
+      setStatus({
+        kind: "success",
+        profile: data.profile,
+        topRepos: data.topRepos,
+      });
     } catch {
       setStatus({
         kind: "error",
@@ -50,7 +61,10 @@ export function AnalyzeSection() {
 
   return (
     <div className="w-full">
-      <SearchForm onSubmitUsername={analyze} disabled={status.kind === "loading"} />
+      <SearchForm
+        onSubmitUsername={analyze}
+        disabled={status.kind === "loading"}
+      />
 
       {status.kind === "loading" && (
         <div
@@ -73,7 +87,12 @@ export function AnalyzeSection() {
         </div>
       )}
 
-      {status.kind === "success" && <ProfilePreview profile={status.profile} />}
+      {status.kind === "success" && (
+        <>
+          <ProfilePreview profile={status.profile} />
+          <TopReposList repos={status.topRepos} />
+        </>
+      )}
     </div>
   );
 }

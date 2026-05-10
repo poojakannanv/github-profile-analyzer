@@ -1,5 +1,8 @@
 import { Octokit } from "@octokit/rest";
-import type { GithubProfile } from "@/types/github";
+import type { GithubProfile, GithubRepo } from "@/types/github";
+
+/** How many top repos we surface in the report. */
+export const TOP_REPOS_LIMIT = 12;
 
 /**
  * Single shared Octokit client.
@@ -69,6 +72,61 @@ export async function getUserProfile(username: string): Promise<GithubProfile> {
     }
     throw new GithubFetchError(
       "Failed to reach the GitHub API. Please try again.",
+      500,
+    );
+  }
+}
+
+/**
+ * Fetch the user's public repos (excluding forks), sorted by stars desc.
+ * Limited to TOP_REPOS_LIMIT to keep payloads small and the report focused.
+ */
+export async function getUserRepos(username: string): Promise<GithubRepo[]> {
+  const octokit = getClient();
+
+  try {
+    const { data } = await octokit.repos.listForUser({
+      username,
+      type: "owner",
+      sort: "updated",
+      per_page: 100,
+    });
+
+    return data
+      .filter((repo) => !repo.fork)
+      .map<GithubRepo>((repo) => ({
+        name: repo.name,
+        description: repo.description ?? null,
+        url: repo.html_url,
+        stars: repo.stargazers_count ?? 0,
+        forks: repo.forks_count ?? 0,
+        language: repo.language ?? null,
+        topics: repo.topics ?? [],
+        updatedAt: repo.updated_at ?? new Date().toISOString(),
+      }))
+      .sort((a, b) => {
+        // Primary: stars desc · Tiebreak: most recently updated
+        if (b.stars !== a.stars) return b.stars - a.stars;
+        return (
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
+      })
+      .slice(0, TOP_REPOS_LIMIT);
+  } catch (err) {
+    const status = (err as { status?: number })?.status;
+
+    if (status === 404) {
+      // Fresh accounts may have no repos yet — return empty rather than 404
+      return [];
+    }
+    if (status === 403 || status === 429) {
+      throw new GithubFetchError(
+        "GitHub rate limit reached. Add a GITHUB_TOKEN in .env.local for higher limits.",
+        429,
+      );
+    }
+    throw new GithubFetchError(
+      "Failed to fetch repositories from GitHub.",
       500,
     );
   }
