@@ -1,22 +1,22 @@
 # 📅 Daily Commit Roadmap — 28 Days
 
-> **Goal:** One meaningful commit per day, 30–60 mins each. By Day 28 you'll have a deployed, portfolio-ready app.
+> **Goal:** One meaningful commit per day, 30–60 mins each. By Day 28 you'll have a deployed, portfolio-ready app that does something no other GitHub profile analyzer does — analyse profiles specifically for the UK job market.
 
 Each day's task is small enough to finish in one sitting and produces a visible change you can commit with confidence.
 
 ---
 
-## Week 1 — Foundation & GitHub Integration
+## Week 1 — Foundation & GitHub Integration ✅ COMPLETE
 
 | Day | Task | Commit Message |
 |---|---|---|
 | 1 | Initial scaffold — Next.js + TS + Tailwind, README, repo on GitHub | `chore: initial project scaffold` |
 | 2 | Add shadcn/ui, configure base theme, layout shell | `feat: setup shadcn ui and theme` |
 | 3 | Build Hero section with headline + tagline | `feat: add hero section` |
-| 4 | Add SearchForm component (input + submit) with client validation | `feat: add github username search form` |
+| 4 | Add SearchForm component with client validation | `feat: add github username search form` |
 | 5 | Create `/api/analyze` route, integrate Octokit, fetch user profile | `feat: integrate github user api` |
 | 6 | Fetch user's public repos, sort by stars | `feat: fetch and sort user repositories` |
-| 7 | Render ProfileCard with avatar, bio, stats (followers, repos) | `feat: add profile card component` |
+| 7 | Render ProfileCard with avatar, bio, stats | `feat: add profile card component` |
 
 ## Week 2 — Analysis & Visualisation
 
@@ -24,35 +24,49 @@ Each day's task is small enough to finish in one sitting and produces a visible 
 |---|---|---|
 | 8 | Aggregate language stats from top repos | `feat: aggregate language statistics` |
 | 9 | Add Recharts language breakdown chart | `feat: add language breakdown chart` |
-| 10 | Display top 6 repos as cards (name, desc, stars, lang) | `feat: add top repositories grid` |
+| 10 | Display top repos as a card grid (name, desc, stars, lang, topics) | `feat: add top repositories grid` |
 | 11 | Set up OpenAI/Anthropic SDK in `lib/ai.ts` | `chore: setup ai sdk` |
 | 12 | Write UK-tuned analysis prompt; first AI call | `feat: implement ai profile analysis` |
 | 13 | Render AI summary with markdown support | `feat: render ai summary as markdown` |
 | 14 | Add loading skeletons for all async sections | `feat: add loading skeletons` |
 
-## Week 3 — UK Market Features
+## Week 3 — 🇬🇧 UK Superpowers (the unique features)
+
+This is the week that makes the project genuinely different from every other GitHub profile analyzer online.
 
 | Day | Task | Commit Message |
 |---|---|---|
-| 15 | Define `lib/uk-market.ts` — UK skill weights for Full-Stack/Junior | `feat: add uk market scoring config` |
-| 16 | Compute UK Match Score (0–100) from languages + repos | `feat: implement uk match score` |
-| 17 | Build SkillGap component listing missing UK-in-demand skills | `feat: add skill gap analysis` |
-| 18 | Suggest next projects via AI, filtered by gaps | `feat: ai-suggested next projects` |
-| 19 | Add "Suggested Learning Resources" section (curated UK links) | `feat: add learning resources` |
-| 20 | Generate shareable Open Graph image (`opengraph-image.tsx`) | `feat: dynamic og image for sharing` |
-| 21 | Add export-as-PDF button (use `@react-pdf/renderer` or print CSS) | `feat: export profile report as pdf` |
+| 15 | UK skill weights + Match Score — `lib/uk-market.ts`, compute 0–100 score for Full-Stack & Graduate roles | `feat: add uk market match score` |
+| 16 | SkillGap component + AI-suggested next projects (filtered by gaps) | `feat: add skill gap and next-project suggestions` |
+| 17 | 🇬🇧 **Visa Sponsor Match** — `lib/uk-companies.ts` with UK Skilled Worker visa sponsors grouped by stack (Revolut, Monzo, GCHQ, BAE, Capgemini, etc.); show matched companies for the user's stack | `feat: add uk visa sponsor matcher` |
+| 18 | 🇬🇧 **Graduate Scheme Matcher** — `lib/uk-schemes.ts` scoring against PwC, KPMG, JPMorgan, Goldman, Accenture, NHS Digital, BAE Systems graduate programmes | `feat: add uk graduate scheme matcher` |
+| 19 | 🇬🇧 **UK Salary Band Estimate** — `lib/uk-salary.ts` with £ ranges by role + location (London / Manchester / remote-UK); show estimated band based on profile | `feat: add uk salary band estimate` |
+| 20 | 🇬🇧 **Industry Specialism Detector** — scan repos for Fintech (Open Banking, Stripe, FCA), GovTech (gov.uk patterns, NHS FHIR, accessibility), Healthtech (HL7, NHS Digital) signals | `feat: add uk industry specialism detector` |
+| 21 | 🇬🇧 **LinkedIn-ready Summary Generator** — AI generates a UK-English LinkedIn About section optimised for UK recruiter search terms; copy-to-clipboard | `feat: add linkedin summary generator` |
 
 ## Week 4 — Polish & Deploy
 
 | Day | Task | Commit Message |
 |---|---|---|
-| 22 | Add Typed.js animation to hero ("Analyse… Improve… Get Hired") | `feat: add typed.js hero animation` |
-| 23 | Error handling: 404 user, rate-limit, network errors | `feat: add comprehensive error handling` |
-| 24 | Add toast notifications (sonner) | `feat: add toast notifications` |
-| 25 | Mobile-responsive audit and fixes | `fix: mobile responsive layout` |
-| 26 | SEO: meta tags, sitemap, robots.txt | `feat: seo optimization` |
-| 27 | Deploy to Vercel, set env vars, smoke test | `chore: deploy to production` |
-| 28 | Final README polish + screenshots + add to your portfolio | `docs: finalise readme with screenshots` |
+| 22 | Dynamic Open Graph image (`opengraph-image.tsx`) for shareability | `feat: dynamic og image for sharing` |
+| 23 | Export full UK report as PDF (`@react-pdf/renderer` or print CSS) | `feat: export profile report as pdf` |
+| 24 | Add Typed.js animation to hero ("Analyse… Improve… Get Hired in the UK") | `feat: add typed.js hero animation` |
+| 25 | Error handling + Sonner toast notifications | `feat: add error handling and toasts` |
+| 26 | Mobile-responsive audit + SEO meta tags + sitemap | `feat: mobile audit and seo` |
+| 27 | Deploy to Vercel, configure env vars, smoke test | `chore: deploy to production` |
+| 28 | Final README polish + screenshots + add to portfolio + LinkedIn post | `docs: finalise readme with screenshots` |
+
+---
+
+## 🇬🇧 The 5 UK Superpowers — why this project is unique
+
+No other GitHub profile analyzer (that we've found) ships these together:
+
+1. **Visa Sponsor Match** — every developer who needs a UK Skilled Worker visa worries about this. Your tool maps their stack → known sponsors.
+2. **Graduate Scheme Matcher** — UK has a unique grad-scheme culture (Big 4, big banks, BAE, civil service). Your tool scores against them by name.
+3. **UK Salary Band Estimate** — £ matters. A rough but informed band gives users a concrete goalpost.
+4. **Industry Specialism Detector** — Fintech / GovTech / Healthtech are the three UK growth engines. Detecting them in repos is a real signal.
+5. **LinkedIn Summary Generator** — UK English, UK recruiter keywords, UK norms (e.g. mentioning visa status, location flexibility).
 
 ---
 
