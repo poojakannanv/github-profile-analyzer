@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { SearchForm } from "@/components/SearchForm";
-import { ProfilePreview } from "@/components/ProfilePreview";
+import { ProfileCard } from "@/components/ProfileCard";
 import { TopReposList } from "@/components/TopReposList";
 import type { GithubProfile, GithubRepo } from "@/types/github";
 
@@ -89,7 +89,7 @@ export function AnalyzeSection() {
 
       {status.kind === "success" && (
         <>
-          <ProfilePreview profile={status.profile} />
+          <ProfileCard profile={status.profile} topRepos={status.topRepos} />
           <TopReposList repos={status.topRepos} />
         </>
       )}
