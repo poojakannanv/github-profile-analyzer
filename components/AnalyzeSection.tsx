@@ -4,12 +4,18 @@ import { useState } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { SearchForm } from "@/components/SearchForm";
 import { ProfileCard } from "@/components/ProfileCard";
+import { LanguageBreakdown } from "@/components/LanguageBreakdown";
 import { TopReposList } from "@/components/TopReposList";
-import type { GithubProfile, GithubRepo } from "@/types/github";
+import type {
+  GithubProfile,
+  GithubRepo,
+  LanguageBreakdown as LanguageBreakdownType,
+} from "@/types/github";
 
 interface AnalyzeSuccess {
   profile: GithubProfile;
   topRepos: GithubRepo[];
+  languages: LanguageBreakdownType[];
 }
 
 type Status =
@@ -50,6 +56,7 @@ export function AnalyzeSection() {
         kind: "success",
         profile: data.profile,
         topRepos: data.topRepos,
+        languages: data.languages,
       });
     } catch {
       setStatus({
@@ -90,6 +97,7 @@ export function AnalyzeSection() {
       {status.kind === "success" && (
         <>
           <ProfileCard profile={status.profile} topRepos={status.topRepos} />
+          <LanguageBreakdown languages={status.languages} />
           <TopReposList repos={status.topRepos} />
         </>
       )}

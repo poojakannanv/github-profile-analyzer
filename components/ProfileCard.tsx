@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { GithubProfile, GithubRepo } from "@/types/github";
+import { languageColour } from "@/lib/language-colours";
 
 interface ProfileCardProps {
   profile: GithubProfile;
@@ -240,40 +241,3 @@ function normaliseBlogUrl(
   return { href, label };
 }
 
-/**
- * Small subset of the popular "github-language-colors" mapping.
- * Keeps the bundle tiny — falls back to a neutral grey for unknown languages.
- */
-function languageColour(language: string): string {
-  const colours: Record<string, string> = {
-    TypeScript: "#3178c6",
-    JavaScript: "#f1e05a",
-    Python: "#3572A5",
-    Java: "#b07219",
-    "C#": "#178600",
-    "C++": "#f34b7d",
-    C: "#555555",
-    Go: "#00ADD8",
-    Rust: "#dea584",
-    Ruby: "#701516",
-    PHP: "#4F5D95",
-    Kotlin: "#A97BFF",
-    Swift: "#F05138",
-    HTML: "#e34c26",
-    CSS: "#563d7c",
-    SCSS: "#c6538c",
-    Shell: "#89e051",
-    Dockerfile: "#384d54",
-    Vue: "#41b883",
-    Svelte: "#ff3e00",
-    Dart: "#00B4AB",
-    Lua: "#000080",
-    R: "#198CE7",
-    Scala: "#c22d40",
-    Elixir: "#6e4a7e",
-    Haskell: "#5e5086",
-    Solidity: "#AA6746",
-    Astro: "#ff5a03",
-  };
-  return colours[language] ?? "#94a3b8";
-}

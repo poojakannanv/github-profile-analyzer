@@ -1,8 +1,15 @@
 import { Octokit } from "@octokit/rest";
-import type { GithubProfile, GithubRepo } from "@/types/github";
+import type {
+  GithubProfile,
+  GithubRepo,
+  LanguageBreakdown,
+} from "@/types/github";
 
 /** How many top repos we surface in the report. */
 export const TOP_REPOS_LIMIT = 12;
+
+/** How many individual languages to keep before bucketing the rest as "Other". */
+export const LANGUAGE_TOP_N = 6;
 
 /**
  * Single shared Octokit client.
@@ -130,4 +137,84 @@ export async function getUserRepos(username: string): Promise<GithubRepo[]> {
       500,
     );
   }
+}
+
+/**
+ * Aggregate language usage across the user's top repos using the GitHub
+ * `listLanguages` endpoint (which returns bytes-per-language per repo).
+ *
+ * Strategy:
+ *  1. Fetch /repos/{owner}/{repo}/languages for each top repo in parallel.
+ *  2. Sum the byte counts across all repos.
+ *  3. Keep the top N languages, fold the rest into "Other".
+ *  4. Return sorted by bytes desc with percentages relative to the grand total.
+ *
+ * Cost: ~TOP_REPOS_LIMIT requests per analyse. Use a GITHUB_TOKEN for
+ * 5,000/hr instead of the unauthenticated 60/hr limit.
+ *
+ * Per-repo failures are tolerated (treated as empty), but a global 403/429
+ * surfaces as a GithubFetchError so the API route can return 429.
+ */
+export async function getLanguageBreakdown(
+  username: string,
+  repos: GithubRepo[],
+): Promise<LanguageBreakdown[]> {
+  if (repos.length === 0) return [];
+
+  const octokit = getClient();
+
+  let rateLimited = false;
+
+  const results = await Promise.all(
+    repos.map(async (repo) => {
+      try {
+        const { data } = await octokit.repos.listLanguages({
+          owner: username,
+          repo: repo.name,
+        });
+        return data as Record<string, number>;
+      } catch (err) {
+        const status = (err as { status?: number })?.status;
+        if (status === 403 || status === 429) {
+          rateLimited = true;
+        }
+        return {} as Record<string, number>;
+      }
+    }),
+  );
+
+  if (rateLimited) {
+    throw new GithubFetchError(
+      "GitHub rate limit reached while fetching language stats. Add a GITHUB_TOKEN in .env.local for higher limits.",
+      429,
+    );
+  }
+
+  // Sum bytes per language
+  const totals = new Map<string, number>();
+  for (const repoLangs of results) {
+    for (const [lang, bytes] of Object.entries(repoLangs)) {
+      totals.set(lang, (totals.get(lang) ?? 0) + bytes);
+    }
+  }
+
+  if (totals.size === 0) return [];
+
+  const sorted = Array.from(totals.entries()).sort((a, b) => b[1] - a[1]);
+
+  // Split into top-N and "Other" bucket
+  const top = sorted.slice(0, LANGUAGE_TOP_N);
+  const rest = sorted.slice(LANGUAGE_TOP_N);
+  const otherBytes = rest.reduce((sum, [, bytes]) => sum + bytes, 0);
+
+  const entries: [string, number][] =
+    otherBytes > 0 ? [...top, ["Other", otherBytes]] : top;
+
+  const grandTotal = entries.reduce((sum, [, bytes]) => sum + bytes, 0);
+
+  return entries.map(([language, bytes]) => ({
+    language,
+    bytes,
+    percent: grandTotal === 0 ? 0 : (bytes / grandTotal) * 100,
+  }));
 }

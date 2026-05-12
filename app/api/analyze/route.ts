@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { GithubFetchError, getUserProfile, getUserRepos } from "@/lib/github";
+import {
+  GithubFetchError,
+  getLanguageBreakdown,
+  getUserProfile,
+  getUserRepos,
+} from "@/lib/github";
 import { validateGithubUsername } from "@/lib/validate";
 
 export const runtime = "nodejs";
@@ -12,11 +17,12 @@ interface AnalyzeRequestBody {
 /**
  * POST /api/analyze
  * Body: { username: string }
- * Returns: { profile: GithubProfile, topRepos: GithubRepo[] } | { error: string }
+ * Returns: { profile, topRepos, languages } | { error }
  *
  * Day 5: profile.
- * Day 6: + top repos (this commit).
- * Day 8+: + language stats and AI-generated UK match report.
+ * Day 6: + topRepos.
+ * Day 8: + languages (this commit).
+ * Week 3+: UK match score, visa sponsors, salary band, etc.
  */
 export async function POST(request: Request) {
   let body: AnalyzeRequestBody;
@@ -42,14 +48,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: validation.error }, { status: 400 });
   }
 
+  const username = validation.value;
+
   try {
-    // Fetch profile and repos in parallel — saves ~one round-trip of latency.
+    // Step 1: profile + repos in parallel (we need repos before we can fetch
+    // their language breakdowns)
     const [profile, topRepos] = await Promise.all([
-      getUserProfile(validation.value),
-      getUserRepos(validation.value),
+      getUserProfile(username),
+      getUserRepos(username),
     ]);
 
-    return NextResponse.json({ profile, topRepos });
+    // Step 2: language breakdown across those repos
+    const languages = await getLanguageBreakdown(username, topRepos);
+
+    return NextResponse.json({ profile, topRepos, languages });
   } catch (err) {
     if (err instanceof GithubFetchError) {
       return NextResponse.json({ error: err.message }, { status: err.status });
