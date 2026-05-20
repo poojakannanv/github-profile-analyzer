@@ -38,7 +38,7 @@ Plus the standard analyzer features:
 | Language | TypeScript | Type-safety, UK employer expectation |
 | Styling | Tailwind CSS + shadcn/ui | Rapid, modern, professional |
 | GitHub API | Octokit (REST) | Official, well-typed |
-| AI | OpenAI / Anthropic API | LLM-generated insights |
+| AI | OpenAI-compatible (Groq, OpenAI, Together, etc.) | LLM-generated insights — provider-agnostic |
 | Charts | Recharts | Language breakdown visualisation |
 | Deploy | Vercel | Free tier, GitHub integration |
 
@@ -50,7 +50,8 @@ npm install
 
 # Set up environment
 cp .env.example .env.local
-# Add your GITHUB_TOKEN (optional, raises rate limit) and OPENAI_API_KEY
+# Add GITHUB_TOKEN (optional but recommended)
+# Add your AI provider key (Groq free tier recommended — see .env.example)
 
 # Run dev server
 npm run dev
