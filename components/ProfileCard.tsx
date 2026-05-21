@@ -31,24 +31,16 @@ export function ProfileCard({ profile, topRepos }: ProfileCardProps) {
 
   return (
     <article className="mt-8 overflow-hidden rounded-2xl border border-border bg-card text-left shadow-sm">
-      {/* Decorative gradient banner */}
-      <div className="relative h-24 bg-gradient-to-r from-primary via-purple-600 to-pink-500">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.25),transparent_50%)]"
-        />
-      </div>
-
-      <div className="px-6 pb-6 sm:px-8">
-        {/* Avatar overlapping the banner */}
-        <div className="-mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="p-6 sm:p-8">
+        {/* Header: avatar + identity */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end">
             <Image
               src={profile.avatarUrl}
               alt={`${profile.login}'s avatar`}
               width={96}
               height={96}
-              className="h-24 w-24 rounded-2xl ring-4 ring-card"
+              className="h-20 w-20 rounded-2xl ring-2 ring-border"
               unoptimized
             />
             <div className="min-w-0">
