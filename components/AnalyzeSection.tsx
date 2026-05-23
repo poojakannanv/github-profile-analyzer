@@ -6,6 +6,9 @@ import { SearchForm } from "@/components/SearchForm";
 import { ProfileCard } from "@/components/ProfileCard";
 import { LanguageBreakdown } from "@/components/LanguageBreakdown";
 import { TopReposList } from "@/components/TopReposList";
+import { AiSummary } from "@/components/AiSummary";
+import { TrustStrip } from "@/components/TrustStrip";
+import { ResultsSkeleton } from "@/components/ResultsSkeleton";
 import type {
   GithubProfile,
   GithubRepo,
@@ -16,6 +19,8 @@ interface AnalyzeSuccess {
   profile: GithubProfile;
   topRepos: GithubRepo[];
   languages: LanguageBreakdownType[];
+  aiSummary: string | null;
+  aiError: string | null;
 }
 
 type Status =
@@ -57,6 +62,8 @@ export function AnalyzeSection() {
         profile: data.profile,
         topRepos: data.topRepos,
         languages: data.languages,
+        aiSummary: data.aiSummary,
+        aiError: data.aiError,
       });
     } catch {
       setStatus({
@@ -68,20 +75,34 @@ export function AnalyzeSection() {
 
   return (
     <div className="w-full">
-      <SearchForm
-        onSubmitUsername={analyze}
-        disabled={status.kind === "loading"}
-      />
+      <div className="mx-auto max-w-xl">
+        <SearchForm
+          onSubmitUsername={analyze}
+          disabled={status.kind === "loading"}
+        />
+      </div>
+
+      {/* Trust strip is decoration for the empty state only.
+          When loading/error/success it gives way to live content. */}
+      {status.kind === "idle" && (
+        <div className="mx-auto max-w-2xl">
+          <TrustStrip />
+        </div>
+      )}
 
       {status.kind === "loading" && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground"
-        >
-          <Loader2 className="h-4 w-4 animate-spin" />
-          Analysing <span className="font-mono">{status.username}</span>…
-        </div>
+        <>
+          <div
+            role="status"
+            aria-live="polite"
+            className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground"
+          >
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Analysing <span className="font-mono">{status.username}</span>…
+            <span className="text-xs opacity-70">(AI takes ~5s)</span>
+          </div>
+          <ResultsSkeleton />
+        </>
       )}
 
       {status.kind === "error" && (
@@ -97,6 +118,10 @@ export function AnalyzeSection() {
       {status.kind === "success" && (
         <>
           <ProfileCard profile={status.profile} topRepos={status.topRepos} />
+          <AiSummary
+            summary={status.aiSummary}
+            error={status.aiError}
+          />
           <LanguageBreakdown languages={status.languages} />
           <TopReposList repos={status.topRepos} />
         </>
