@@ -63,10 +63,11 @@ export function RepoCard({ repo, rank }: RepoCardProps) {
         </ul>
       )}
 
-      {/* Footer: language + stats */}
-      <footer className="mt-auto flex items-center justify-between gap-3 pt-4 text-xs text-muted-foreground">
+      {/* Footer: language + stats. Flat flex-wrap row so chips never collide
+          or wrap mid-phrase ("5 days ago" split across lines). */}
+      <footer className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-4 text-xs text-muted-foreground">
         {repo.language ? (
-          <span className="inline-flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
             <span
               aria-hidden="true"
               className="h-2 w-2 rounded-full"
@@ -75,25 +76,31 @@ export function RepoCard({ repo, rank }: RepoCardProps) {
             {repo.language}
           </span>
         ) : (
-          <span className="italic opacity-60">No language</span>
+          <span className="whitespace-nowrap italic opacity-60">No language</span>
         )}
 
-        <span className="inline-flex items-center gap-3">
-          <span className="inline-flex items-center gap-1" title={`${repo.stars} stars`}>
-            <Star className="h-3 w-3" aria-hidden="true" />
-            {formatCount(repo.stars)}
-          </span>
-          <span className="hidden items-center gap-1 sm:inline-flex" title={`${repo.forks} forks`}>
-            <GitFork className="h-3 w-3" aria-hidden="true" />
-            {formatCount(repo.forks)}
-          </span>
-          <span
-            className="hidden items-center gap-1 lg:inline-flex"
-            title={`Updated ${new Date(repo.updatedAt).toLocaleString("en-GB")}`}
-          >
-            <Clock className="h-3 w-3" aria-hidden="true" />
-            {formatRelativeTime(repo.updatedAt)}
-          </span>
+        <span
+          className="inline-flex items-center gap-1 whitespace-nowrap"
+          title={`${repo.stars} stars`}
+        >
+          <Star className="h-3 w-3" aria-hidden="true" />
+          {formatCount(repo.stars)}
+        </span>
+
+        <span
+          className="inline-flex items-center gap-1 whitespace-nowrap"
+          title={`${repo.forks} forks`}
+        >
+          <GitFork className="h-3 w-3" aria-hidden="true" />
+          {formatCount(repo.forks)}
+        </span>
+
+        <span
+          className="ml-auto inline-flex items-center gap-1 whitespace-nowrap"
+          title={`Updated ${new Date(repo.updatedAt).toLocaleString("en-GB")}`}
+        >
+          <Clock className="h-3 w-3" aria-hidden="true" />
+          {formatRelativeTimeShort(repo.updatedAt)}
         </span>
       </footer>
     </a>
@@ -102,7 +109,7 @@ export function RepoCard({ repo, rank }: RepoCardProps) {
 
 /* ----- Formatting helpers ----- */
 
-/** 1234 → "1.2k", 1_500_000 → "1.5M" */
+/** 1234 -> "1.2k", 1_500_000 -> "1.5M" */
 function formatCount(n: number): string {
   if (n < 1000) return n.toString();
   if (n < 1_000_000) {
@@ -113,27 +120,25 @@ function formatCount(n: number): string {
   return value >= 10 ? `${Math.round(value)}M` : `${value.toFixed(1)}M`;
 }
 
-/** "2 days ago", "3 months ago" — UK English, terse. */
-function formatRelativeTime(iso: string): string {
+/** Compact relative time — "5d", "15h", "2mo", "1y". Keeps cards from
+ *  wrapping the time onto multiple lines in narrow grids. */
+function formatRelativeTimeShort(iso: string): string {
   const then = new Date(iso).getTime();
   const now = Date.now();
   const diffSec = Math.max(0, Math.round((now - then) / 1000));
 
-  const units: { unit: Intl.RelativeTimeFormatUnit; seconds: number }[] = [
-    { unit: "year", seconds: 60 * 60 * 24 * 365 },
-    { unit: "month", seconds: 60 * 60 * 24 * 30 },
-    { unit: "week", seconds: 60 * 60 * 24 * 7 },
-    { unit: "day", seconds: 60 * 60 * 24 },
-    { unit: "hour", seconds: 60 * 60 },
-    { unit: "minute", seconds: 60 },
-  ];
+  const minute = 60;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const week = 7 * day;
+  const month = 30 * day;
+  const year = 365 * day;
 
-  const rtf = new Intl.RelativeTimeFormat("en-GB", { numeric: "auto" });
-
-  for (const { unit, seconds } of units) {
-    if (diffSec >= seconds) {
-      return rtf.format(-Math.floor(diffSec / seconds), unit);
-    }
-  }
-  return "just now";
+  if (diffSec < minute) return "now";
+  if (diffSec < hour) return `${Math.floor(diffSec / minute)}m`;
+  if (diffSec < day) return `${Math.floor(diffSec / hour)}h`;
+  if (diffSec < week) return `${Math.floor(diffSec / day)}d`;
+  if (diffSec < month) return `${Math.floor(diffSec / week)}w`;
+  if (diffSec < year) return `${Math.floor(diffSec / month)}mo`;
+  return `${Math.floor(diffSec / year)}y`;
 }
