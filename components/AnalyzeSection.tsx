@@ -9,6 +9,7 @@ import { TopReposList } from "@/components/TopReposList";
 import { AiSummary } from "@/components/AiSummary";
 import { TrustStrip } from "@/components/TrustStrip";
 import { ResultsSkeleton } from "@/components/ResultsSkeleton";
+import { VisaSponsorMatch } from "@/components/VisaSponsorMatch";
 import type {
   GithubProfile,
   GithubRepo,
@@ -32,7 +33,7 @@ type Status =
 type AnalyzeResponse = AnalyzeSuccess | { error: string };
 
 /**
- * Client wrapper that owns the search → fetch → display flow.
+ * Client wrapper that owns the search -> fetch -> display flow.
  * Keeps Hero a pure server component.
  */
 export function AnalyzeSection() {
@@ -123,6 +124,7 @@ export function AnalyzeSection() {
             error={status.aiError}
           />
           <LanguageBreakdown languages={status.languages} />
+          <VisaSponsorMatch languages={status.languages} />
           <TopReposList repos={status.topRepos} />
         </>
       )}

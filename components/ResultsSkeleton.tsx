@@ -4,9 +4,9 @@ import { Skeleton } from "@/components/ui/skeleton";
  * Day 14 — loading state placeholders.
  *
  * Mirrors the eventual ProfileCard / AiSummary / LanguageBreakdown /
- * TopReposList layout so the page doesn't reflow when real data arrives.
- * Composed of four section skeletons inside one wrapper so AnalyzeSection
- * can swap it in with a single component.
+ * VisaSponsorMatch / TopReposList layout so the page doesn't reflow when
+ * real data arrives. Composed of section skeletons inside one wrapper so
+ * AnalyzeSection can swap it in with a single component.
  */
 export function ResultsSkeleton() {
   return (
@@ -14,6 +14,7 @@ export function ResultsSkeleton() {
       <ProfileCardSkeleton />
       <AiSummarySkeleton />
       <LanguageBreakdownSkeleton />
+      <VisaSponsorMatchSkeleton />
       <TopReposListSkeleton />
     </div>
   );
@@ -155,6 +156,66 @@ function LanguageBreakdownSkeleton() {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Visa sponsor match                                                          */
+/* -------------------------------------------------------------------------- */
+
+function VisaSponsorMatchSkeleton() {
+  return (
+    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+      <header className="mb-5 flex items-center justify-between">
+        <div className="inline-flex items-center gap-2">
+          <Skeleton className="h-6 w-6 rounded-md" />
+          <Skeleton className="h-4 w-44" />
+        </div>
+        <Skeleton className="h-3 w-56" />
+      </header>
+
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <li
+            key={i}
+            className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4"
+          >
+            {/* Name + sector chip */}
+            <div className="flex items-start justify-between gap-2">
+              <div className="space-y-1.5">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+              <Skeleton className="h-4 w-14 rounded-full" />
+            </div>
+
+            {/* Tagline */}
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-full" />
+              <Skeleton className="h-3 w-4/5" />
+            </div>
+
+            {/* Language chips */}
+            <div className="flex flex-wrap gap-1.5">
+              <Skeleton className="h-5 w-14 rounded-full" />
+              <Skeleton className="h-5 w-16 rounded-full" />
+              <Skeleton className="h-5 w-12 rounded-full" />
+            </div>
+
+            {/* Match strength bar */}
+            <div className="mt-1">
+              <div className="flex justify-between">
+                <Skeleton className="h-2.5 w-20" />
+                <Skeleton className="h-2.5 w-8" />
+              </div>
+              <Skeleton className="mt-1 h-1.5 w-full rounded-full" />
+            </div>
+
+            <Skeleton className="mt-auto h-3 w-16" />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /* Top repos                                                                   */
 /* -------------------------------------------------------------------------- */
 
@@ -192,14 +253,14 @@ function TopReposListSkeleton() {
             </div>
 
             {/* Footer meta */}
-            <div className="mt-auto flex items-center gap-4">
+            <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1">
               <div className="inline-flex items-center gap-1.5">
                 <Skeleton className="h-2 w-2 rounded-full" />
                 <Skeleton className="h-3 w-16" />
               </div>
               <Skeleton className="h-3 w-10" />
               <Skeleton className="h-3 w-10" />
-              <Skeleton className="ml-auto h-3 w-20" />
+              <Skeleton className="ml-auto h-3 w-10" />
             </div>
           </li>
         ))}
