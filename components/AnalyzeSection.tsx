@@ -10,6 +10,7 @@ import { AiSummary } from "@/components/AiSummary";
 import { TrustStrip } from "@/components/TrustStrip";
 import { ResultsSkeleton } from "@/components/ResultsSkeleton";
 import { VisaSponsorMatch } from "@/components/VisaSponsorMatch";
+import { SkillGap } from "@/components/SkillGap";
 import type {
   GithubProfile,
   GithubRepo,
@@ -124,6 +125,10 @@ export function AnalyzeSection() {
             error={status.aiError}
           />
           <LanguageBreakdown languages={status.languages} />
+          <SkillGap
+            languages={status.languages}
+            topRepos={status.topRepos}
+          />
           <VisaSponsorMatch languages={status.languages} />
           <TopReposList repos={status.topRepos} />
         </>

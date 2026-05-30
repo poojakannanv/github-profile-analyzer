@@ -4,9 +4,9 @@ import { Skeleton } from "@/components/ui/skeleton";
  * Day 14 — loading state placeholders.
  *
  * Mirrors the eventual ProfileCard / AiSummary / LanguageBreakdown /
- * VisaSponsorMatch / TopReposList layout so the page doesn't reflow when
- * real data arrives. Composed of section skeletons inside one wrapper so
- * AnalyzeSection can swap it in with a single component.
+ * SkillGap / VisaSponsorMatch / TopReposList layout so the page doesn't
+ * reflow when real data arrives. Composed of section skeletons inside
+ * one wrapper so AnalyzeSection can swap it in with a single component.
  */
 export function ResultsSkeleton() {
   return (
@@ -14,6 +14,7 @@ export function ResultsSkeleton() {
       <ProfileCardSkeleton />
       <AiSummarySkeleton />
       <LanguageBreakdownSkeleton />
+      <SkillGapSkeleton />
       <VisaSponsorMatchSkeleton />
       <TopReposListSkeleton />
     </div>
@@ -151,6 +152,59 @@ function LanguageBreakdownSkeleton() {
           ))}
         </ul>
       </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Skill gap                                                                   */
+/* -------------------------------------------------------------------------- */
+
+function SkillGapSkeleton() {
+  return (
+    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+      <header className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-6 w-6 rounded-md" />
+          <div className="space-y-1.5">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-3 w-56" />
+          </div>
+        </div>
+
+        <div className="w-full sm:w-64">
+          <div className="flex justify-between">
+            <Skeleton className="h-3 w-24" />
+            <Skeleton className="h-3 w-8" />
+          </div>
+          <Skeleton className="mt-1.5 h-2 w-full rounded-full" />
+        </div>
+      </header>
+
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <li
+            key={i}
+            className="rounded-xl border border-border bg-background p-4"
+          >
+            <header className="mb-3 flex items-center justify-between">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-10 rounded-full" />
+            </header>
+            <ul className="space-y-1.5">
+              {Array.from({ length: 5 }).map((__, j) => (
+                <li key={j} className="flex items-start gap-2 px-2 py-1.5">
+                  <Skeleton className="mt-0.5 h-4 w-4 rounded-full" />
+                  <div className="flex-1 space-y-1">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-2.5 w-full" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
