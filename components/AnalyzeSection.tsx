@@ -11,6 +11,7 @@ import { TrustStrip } from "@/components/TrustStrip";
 import { ResultsSkeleton } from "@/components/ResultsSkeleton";
 import { VisaSponsorMatch } from "@/components/VisaSponsorMatch";
 import { SkillGap } from "@/components/SkillGap";
+import { GradSchemeMatcher } from "@/components/GradSchemeMatcher";
 import type {
   GithubProfile,
   GithubRepo,
@@ -130,6 +131,10 @@ export function AnalyzeSection() {
             topRepos={status.topRepos}
           />
           <VisaSponsorMatch languages={status.languages} />
+          <GradSchemeMatcher
+            languages={status.languages}
+            topRepos={status.topRepos}
+          />
           <TopReposList repos={status.topRepos} />
         </>
       )}
