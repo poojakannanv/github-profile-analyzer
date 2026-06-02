@@ -12,6 +12,7 @@ import { ResultsSkeleton } from "@/components/ResultsSkeleton";
 import { VisaSponsorMatch } from "@/components/VisaSponsorMatch";
 import { SkillGap } from "@/components/SkillGap";
 import { GradSchemeMatcher } from "@/components/GradSchemeMatcher";
+import { SalaryBand } from "@/components/SalaryBand";
 import type {
   GithubProfile,
   GithubRepo,
@@ -128,6 +129,10 @@ export function AnalyzeSection() {
           <LanguageBreakdown languages={status.languages} />
           <SkillGap
             languages={status.languages}
+            topRepos={status.topRepos}
+          />
+          <SalaryBand
+            profile={status.profile}
             topRepos={status.topRepos}
           />
           <VisaSponsorMatch languages={status.languages} />

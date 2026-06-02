@@ -4,8 +4,8 @@ import { Skeleton } from "@/components/ui/skeleton";
  * Day 14 — loading state placeholders.
  *
  * Mirrors the eventual ProfileCard / AiSummary / LanguageBreakdown /
- * SkillGap / VisaSponsorMatch / GradSchemeMatcher / TopReposList layout
- * so the page doesn't reflow when real data arrives.
+ * SkillGap / SalaryBand / VisaSponsorMatch / GradSchemeMatcher /
+ * TopReposList layout so the page doesn't reflow when real data arrives.
  */
 export function ResultsSkeleton() {
   return (
@@ -14,6 +14,7 @@ export function ResultsSkeleton() {
       <AiSummarySkeleton />
       <LanguageBreakdownSkeleton />
       <SkillGapSkeleton />
+      <SalaryBandSkeleton />
       <VisaSponsorMatchSkeleton />
       <GradSchemeMatcherSkeleton />
       <TopReposListSkeleton />
@@ -22,9 +23,6 @@ export function ResultsSkeleton() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Profile card                                                                */
-/* -------------------------------------------------------------------------- */
-
 function ProfileCardSkeleton() {
   return (
     <article className="mt-8 overflow-hidden rounded-2xl border border-border bg-card text-left shadow-sm">
@@ -39,18 +37,15 @@ function ProfileCardSkeleton() {
           </div>
           <Skeleton className="h-6 w-32 rounded-full" />
         </div>
-
         <div className="mt-5 space-y-2">
           <Skeleton className="h-3.5 w-full max-w-xl" />
           <Skeleton className="h-3.5 w-3/4 max-w-md" />
         </div>
-
         <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
           <Skeleton className="h-3 w-24" />
           <Skeleton className="h-3 w-32" />
           <Skeleton className="h-3 w-28" />
         </div>
-
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="rounded-xl border border-border bg-background p-4">
@@ -59,7 +54,6 @@ function ProfileCardSkeleton() {
             </div>
           ))}
         </div>
-
         <div className="mt-6">
           <Skeleton className="h-3 w-32" />
           <div className="mt-2 flex flex-wrap gap-2">
@@ -74,9 +68,6 @@ function ProfileCardSkeleton() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* AI summary                                                                  */
-/* -------------------------------------------------------------------------- */
-
 function AiSummarySkeleton() {
   return (
     <section className="mt-8 overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card shadow-sm">
@@ -105,9 +96,6 @@ function AiSummarySkeleton() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Language breakdown                                                          */
-/* -------------------------------------------------------------------------- */
-
 function LanguageBreakdownSkeleton() {
   return (
     <section className="mt-6 rounded-xl border border-border bg-card p-6">
@@ -140,9 +128,6 @@ function LanguageBreakdownSkeleton() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Skill gap                                                                   */
-/* -------------------------------------------------------------------------- */
-
 function SkillGapSkeleton() {
   return (
     <section className="mt-6 rounded-xl border border-border bg-card p-6">
@@ -188,9 +173,63 @@ function SkillGapSkeleton() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Visa sponsor match                                                          */
-/* -------------------------------------------------------------------------- */
+function SalaryBandSkeleton() {
+  return (
+    <section className="mt-6 overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card shadow-sm">
+      <header className="flex items-center justify-between border-b border-border/60 px-6 py-3">
+        <div className="inline-flex items-center gap-2">
+          <Skeleton className="h-6 w-6 rounded-md" />
+          <Skeleton className="h-4 w-44" />
+        </div>
+        <Skeleton className="h-3 w-32" />
+      </header>
+      <div className="px-6 py-5">
+        {/* Hero band */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-2">
+            <Skeleton className="h-2.5 w-20" />
+            <Skeleton className="h-7 w-48" />
+            <Skeleton className="h-3.5 w-40" />
+          </div>
+          <Skeleton className="h-6 w-32 rounded-full" />
+        </div>
+        {/* Ladder */}
+        <ol className="mt-6 grid grid-cols-5 gap-1.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <li
+              key={i}
+              className="rounded-lg border border-border bg-background px-2 py-2"
+            >
+              <Skeleton className="h-2.5 w-12" />
+              <Skeleton className="mt-1 h-3 w-10" />
+            </li>
+          ))}
+        </ol>
+        {/* Breakdown */}
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="rounded-xl border border-border bg-background p-4">
+              <Skeleton className="h-2.5 w-20" />
+              <Skeleton className="mt-2 h-4 w-28" />
+              <Skeleton className="mt-2 h-2.5 w-full" />
+            </div>
+          ))}
+        </div>
+        {/* Signal grid */}
+        <dl className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="rounded-lg border border-border bg-background px-3 py-2">
+              <Skeleton className="h-2.5 w-16" />
+              <Skeleton className="mt-1 h-3.5 w-12" />
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
 
+/* -------------------------------------------------------------------------- */
 function VisaSponsorMatchSkeleton() {
   return (
     <section className="mt-6 rounded-xl border border-border bg-card p-6">
@@ -236,9 +275,6 @@ function VisaSponsorMatchSkeleton() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Grad scheme matcher                                                         */
-/* -------------------------------------------------------------------------- */
-
 function GradSchemeMatcherSkeleton() {
   return (
     <section className="mt-6 rounded-xl border border-border bg-card p-6">
@@ -252,7 +288,6 @@ function GradSchemeMatcherSkeleton() {
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
           <li key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4">
-            {/* Header: employer + sector */}
             <div className="flex items-start justify-between gap-2">
               <div className="space-y-1.5">
                 <Skeleton className="h-4 w-28" />
@@ -260,23 +295,19 @@ function GradSchemeMatcherSkeleton() {
               </div>
               <Skeleton className="h-4 w-14 rounded-full" />
             </div>
-            {/* Summary */}
             <div className="space-y-2">
               <Skeleton className="h-3 w-full" />
               <Skeleton className="h-3 w-4/5" />
             </div>
-            {/* Window chip row */}
             <div className="flex items-center justify-between rounded-md border border-border bg-muted/30 px-2.5 py-1.5">
               <Skeleton className="h-3 w-20" />
               <Skeleton className="h-3 w-16" />
             </div>
-            {/* Matched tech chips */}
             <div className="flex flex-wrap gap-1.5">
               <Skeleton className="h-5 w-14 rounded-full" />
               <Skeleton className="h-5 w-16 rounded-full" />
               <Skeleton className="h-5 w-12 rounded-full" />
             </div>
-            {/* Footer meta */}
             <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1">
               <Skeleton className="h-3 w-16" />
               <Skeleton className="h-3 w-20" />
@@ -290,9 +321,6 @@ function GradSchemeMatcherSkeleton() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Top repos                                                                   */
-/* -------------------------------------------------------------------------- */
-
 function TopReposListSkeleton() {
   return (
     <section className="mt-6">
