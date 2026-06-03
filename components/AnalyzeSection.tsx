@@ -13,6 +13,7 @@ import { VisaSponsorMatch } from "@/components/VisaSponsorMatch";
 import { SkillGap } from "@/components/SkillGap";
 import { GradSchemeMatcher } from "@/components/GradSchemeMatcher";
 import { SalaryBand } from "@/components/SalaryBand";
+import { IndustrySpecialism } from "@/components/IndustrySpecialism";
 import type {
   GithubProfile,
   GithubRepo,
@@ -127,6 +128,7 @@ export function AnalyzeSection() {
             error={status.aiError}
           />
           <LanguageBreakdown languages={status.languages} />
+          <IndustrySpecialism topRepos={status.topRepos} />
           <SkillGap
             languages={status.languages}
             topRepos={status.topRepos}

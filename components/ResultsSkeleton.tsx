@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 /**
  * Day 14 — loading state placeholders.
  *
- * Mirrors the eventual ProfileCard / AiSummary / LanguageBreakdown /
+ * Mirrors the eventual ProfileCard / AiSummary / LanguageBreakdown / IndustrySpecialism /
  * SkillGap / SalaryBand / VisaSponsorMatch / GradSchemeMatcher /
  * TopReposList layout so the page doesn't reflow when real data arrives.
  */
@@ -13,6 +13,7 @@ export function ResultsSkeleton() {
       <ProfileCardSkeleton />
       <AiSummarySkeleton />
       <LanguageBreakdownSkeleton />
+      <IndustrySpecialismSkeleton />
       <SkillGapSkeleton />
       <SalaryBandSkeleton />
       <VisaSponsorMatchSkeleton />
@@ -122,6 +123,63 @@ function LanguageBreakdownSkeleton() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+function IndustrySpecialismSkeleton() {
+  return (
+    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+      <header className="mb-5 flex items-center justify-between">
+        <div className="inline-flex items-center gap-2">
+          <Skeleton className="h-6 w-6 rounded-md" />
+          <Skeleton className="h-4 w-44" />
+        </div>
+        <Skeleton className="h-3 w-56" />
+      </header>
+
+      {/* Hero */}
+      <div className="rounded-xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card p-5">
+        <Skeleton className="h-2.5 w-24" />
+        <div className="mt-2 flex items-baseline gap-3">
+          <Skeleton className="h-7 w-32" />
+          <Skeleton className="h-5 w-24 rounded-full" />
+        </div>
+        <Skeleton className="mt-2 h-3 w-3/4" />
+        <Skeleton className="mt-3 h-3 w-1/2" />
+      </div>
+
+      {/* Affinity bars */}
+      <ol className="mt-6 space-y-2">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <li key={i}>
+            <div className="flex justify-between">
+              <Skeleton className="h-3 w-24" />
+              <Skeleton className="h-3 w-8" />
+            </div>
+            <Skeleton className="mt-1 h-2 w-full rounded-full" />
+          </li>
+        ))}
+      </ol>
+
+      {/* Evidence cards */}
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <div key={i} className="rounded-xl border border-border bg-background p-4">
+            <Skeleton className="h-2.5 w-20" />
+            <Skeleton className="mt-1 h-4 w-24" />
+            <ul className="mt-3 space-y-2">
+              {Array.from({ length: 3 }).map((__, j) => (
+                <li key={j}>
+                  <Skeleton className="h-3 w-32" />
+                  <Skeleton className="mt-1 h-2.5 w-full" />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </section>
   );

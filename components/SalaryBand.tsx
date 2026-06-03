@@ -1,4 +1,5 @@
 import { PoundSterling, MapPin, Sparkles, TrendingUp } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { GithubProfile, GithubRepo } from "@/types/github";
 import {
   estimateSalary,
@@ -178,7 +179,7 @@ function TierStep({ band, isCurrent, isReached }: TierStepProps) {
 }
 
 interface BreakdownCardProps {
-  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  icon: LucideIcon;
   label: string;
   value: string;
   hint: string;
