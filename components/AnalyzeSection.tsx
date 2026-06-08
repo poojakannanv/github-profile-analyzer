@@ -14,6 +14,7 @@ import { SkillGap } from "@/components/SkillGap";
 import { GradSchemeMatcher } from "@/components/GradSchemeMatcher";
 import { SalaryBand } from "@/components/SalaryBand";
 import { IndustrySpecialism } from "@/components/IndustrySpecialism";
+import { LinkedInSummary } from "@/components/LinkedInSummary";
 import type {
   GithubProfile,
   GithubRepo,
@@ -143,6 +144,11 @@ export function AnalyzeSection() {
             topRepos={status.topRepos}
           />
           <TopReposList repos={status.topRepos} />
+          <LinkedInSummary
+            profile={status.profile}
+            topRepos={status.topRepos}
+            languages={status.languages}
+          />
         </>
       )}
     </div>

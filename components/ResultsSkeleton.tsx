@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
  *
  * Mirrors the eventual ProfileCard / AiSummary / LanguageBreakdown / IndustrySpecialism /
  * SkillGap / SalaryBand / VisaSponsorMatch / GradSchemeMatcher /
- * TopReposList layout so the page doesn't reflow when real data arrives.
+ * TopReposList / LinkedInSummary layout so the page doesn't reflow when real data arrives.
  */
 export function ResultsSkeleton() {
   return (
@@ -19,6 +19,7 @@ export function ResultsSkeleton() {
       <VisaSponsorMatchSkeleton />
       <GradSchemeMatcherSkeleton />
       <TopReposListSkeleton />
+      <LinkedInSummarySkeleton />
     </div>
   );
 }
@@ -414,6 +415,47 @@ function TopReposListSkeleton() {
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+function LinkedInSummarySkeleton() {
+  return (
+    <section className="mt-6 overflow-hidden rounded-2xl border border-[#0a66c2]/30 bg-gradient-to-br from-[#0a66c2]/5 via-card to-card shadow-sm">
+      <header className="flex items-center justify-between border-b border-border/60 px-6 py-3">
+        <div className="inline-flex items-center gap-2">
+          <Skeleton className="h-6 w-6 rounded-md" />
+          <Skeleton className="h-4 w-36" />
+        </div>
+        <Skeleton className="h-3 w-56" />
+      </header>
+      <div className="space-y-5 px-6 py-5">
+        {/* Headline field */}
+        <div>
+          <div className="mb-2 flex items-baseline justify-between">
+            <div className="space-y-1">
+              <Skeleton className="h-3.5 w-20" />
+              <Skeleton className="h-3 w-44" />
+            </div>
+            <Skeleton className="h-3 w-12" />
+          </div>
+          <Skeleton className="h-14 w-full rounded-lg" />
+        </div>
+        {/* About field */}
+        <div>
+          <div className="mb-2 flex items-baseline justify-between">
+            <div className="space-y-1">
+              <Skeleton className="h-3.5 w-16" />
+              <Skeleton className="h-3 w-52" />
+            </div>
+            <Skeleton className="h-3 w-14" />
+          </div>
+          <Skeleton className="h-48 w-full rounded-lg" />
+        </div>
+        {/* Info note */}
+        <Skeleton className="h-10 w-full rounded-md" />
+      </div>
     </section>
   );
 }
