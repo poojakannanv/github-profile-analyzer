@@ -17,7 +17,10 @@ interface LanguageChartProps {
  */
 export function LanguageChart({ languages }: LanguageChartProps) {
   return (
-    <div className="relative aspect-square w-full max-w-[220px] sm:max-w-[240px]">
+    <div
+      className="relative mx-auto"
+      style={{ width: 220, height: 220 }}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
