@@ -20,7 +20,7 @@ export function TopReposList({ repos }: TopReposListProps) {
           aria-hidden="true"
         />
         <p className="mt-2 text-sm text-muted-foreground">
-          No public, non-fork repositories yet — that's actually a great
+          No public, non-fork repositories yet &mdash; that&apos;s actually a great
           starting point for the next-projects suggestions on Day 16.
         </p>
       </section>
