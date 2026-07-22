@@ -1,6 +1,7 @@
 /**
  * Domain types used across the analyzer.
- * Kept lean intentionally — extend per Week 2/3 features.
+ * Kept lean intentionally — feature-specific derived types live next to the
+ * feature (see lib/uk-*.ts and lib/linkedin-summary.ts).
  */
 
 export interface GithubProfile {
@@ -31,20 +32,4 @@ export interface LanguageBreakdown {
   language: string;
   bytes: number;
   percent: number;
-}
-
-export interface UkMatchReport {
-  score: number; // 0-100
-  strengths: string[];
-  gaps: string[];
-  suggestedRoles: string[];
-  suggestedProjects: string[];
-}
-
-export interface AnalysisResult {
-  profile: GithubProfile;
-  topRepos: GithubRepo[];
-  languages: LanguageBreakdown[];
-  ukMatch: UkMatchReport;
-  aiSummary: string; // markdown
 }
