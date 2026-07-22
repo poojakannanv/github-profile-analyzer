@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2, RefreshCw } from "lucide-react";
 import { SearchForm } from "@/components/SearchForm";
 import { ProfileCard } from "@/components/ProfileCard";
 import { LanguageBreakdown } from "@/components/LanguageBreakdown";
@@ -15,6 +15,12 @@ import { GradSchemeMatcher } from "@/components/GradSchemeMatcher";
 import { SalaryBand } from "@/components/SalaryBand";
 import { IndustrySpecialism } from "@/components/IndustrySpecialism";
 import { LinkedInSummary } from "@/components/LinkedInSummary";
+import { ToastProvider, useToast } from "@/components/Toaster";
+import {
+  classifyHttpError,
+  networkError,
+  type AnalyzeError,
+} from "@/lib/errors";
 import type {
   GithubProfile,
   GithubRepo,
@@ -32,50 +38,90 @@ interface AnalyzeSuccess {
 type Status =
   | { kind: "idle" }
   | { kind: "loading"; username: string }
-  | { kind: "error"; message: string }
-  | ({ kind: "success" } & AnalyzeSuccess);
+  | { kind: "error"; username: string; error: AnalyzeError }
+  | ({ kind: "success"; username: string } & AnalyzeSuccess);
 
 type AnalyzeResponse = AnalyzeSuccess | { error: string };
 
 /**
  * Client wrapper that owns the search -> fetch -> display flow.
- * Keeps Hero a pure server component.
+ * Keeps Hero a pure server component. Wraps everything in a ToastProvider
+ * so children (including the degraded-AI notice below) can push toasts.
  */
 export function AnalyzeSection() {
+  return (
+    <ToastProvider>
+      <AnalyzeSectionInner />
+    </ToastProvider>
+  );
+}
+
+function AnalyzeSectionInner() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const { push } = useToast();
 
   async function analyze(username: string) {
     setStatus({ kind: "loading", username });
 
+    let res: Response;
     try {
-      const res = await fetch("/api/analyze", {
+      res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username }),
       });
-
-      const data = (await res.json()) as AnalyzeResponse;
-
-      if (!res.ok || "error" in data) {
-        const message =
-          "error" in data ? data.error : `Request failed (${res.status}).`;
-        setStatus({ kind: "error", message });
-        return;
-      }
-
-      setStatus({
-        kind: "success",
-        profile: data.profile,
-        topRepos: data.topRepos,
-        languages: data.languages,
-        aiSummary: data.aiSummary,
-        aiError: data.aiError,
-      });
     } catch {
+      setStatus({ kind: "error", username, error: networkError() });
+      return;
+    }
+
+    let data: AnalyzeResponse | null = null;
+    try {
+      data = (await res.json()) as AnalyzeResponse;
+    } catch {
+      // Body wasn't JSON — treat as a server error
       setStatus({
         kind: "error",
-        message: "Network error — please check your connection and try again.",
+        username,
+        error: classifyHttpError(res.status, null),
       });
+      return;
+    }
+
+    if (!res.ok || "error" in data) {
+      const bodyForClassify = "error" in data ? data : null;
+      setStatus({
+        kind: "error",
+        username,
+        error: classifyHttpError(res.status, bodyForClassify),
+      });
+      return;
+    }
+
+    setStatus({
+      kind: "success",
+      username,
+      profile: data.profile,
+      topRepos: data.topRepos,
+      languages: data.languages,
+      aiSummary: data.aiSummary,
+      aiError: data.aiError,
+    });
+
+    // Non-blocking notice: profile loaded fine but AI degraded.
+    if (data.aiError) {
+      push({
+        tone: "warning",
+        title: "AI report unavailable",
+        description:
+          "Showing the profile without the AI summary. Everything else is live.",
+      });
+    }
+  }
+
+  function retry() {
+    if (status.kind === "error" || status.kind === "success" || status.kind === "loading") {
+      analyze(status.username);
     }
   }
 
@@ -88,8 +134,6 @@ export function AnalyzeSection() {
         />
       </div>
 
-      {/* Trust strip is decoration for the empty state only.
-          When loading/error/success it gives way to live content. */}
       {status.kind === "idle" && (
         <div className="mx-auto max-w-2xl">
           <TrustStrip />
@@ -112,13 +156,11 @@ export function AnalyzeSection() {
       )}
 
       {status.kind === "error" && (
-        <div
-          role="alert"
-          className="mt-6 flex items-start gap-3 rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-left text-sm text-destructive"
-        >
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-          <p>{status.message}</p>
-        </div>
+        <ErrorPanel
+          username={status.username}
+          error={status.error}
+          onRetry={retry}
+        />
       )}
 
       {status.kind === "success" && (
@@ -151,6 +193,48 @@ export function AnalyzeSection() {
           />
         </>
       )}
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+interface ErrorPanelProps {
+  username: string;
+  error: AnalyzeError;
+  onRetry: () => void;
+}
+
+function ErrorPanel({ username, error, onRetry }: ErrorPanelProps) {
+  return (
+    <div
+      role="alert"
+      className="mt-6 rounded-lg border border-destructive/40 bg-destructive/5 p-5 text-sm"
+    >
+      <div className="flex items-start gap-3">
+        <AlertCircle
+          className="mt-0.5 h-4 w-4 shrink-0 text-destructive"
+          aria-hidden="true"
+        />
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-destructive">{error.title}</p>
+          <p className="mt-1 text-destructive/90">{error.message}</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Tried <span className="font-mono">{username}</span>
+          </p>
+
+          {error.retryable && (
+            <button
+              type="button"
+              onClick={onRetry}
+              className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-destructive/40 bg-background px-3 py-1.5 text-xs font-medium text-destructive shadow-sm transition-colors hover:bg-destructive/10"
+            >
+              <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
+              Try again
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
