@@ -14,7 +14,7 @@ interface TopReposListProps {
 export function TopReposList({ repos }: TopReposListProps) {
   if (repos.length === 0) {
     return (
-      <section className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-6 text-center">
+      <section className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-5 text-center sm:p-6">
         <FolderOpen
           className="mx-auto h-6 w-6 text-muted-foreground"
           aria-hidden="true"
@@ -29,7 +29,7 @@ export function TopReposList({ repos }: TopReposListProps) {
 
   return (
     <section
-      className="mt-6 rounded-xl border border-border bg-card p-6"
+      className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6"
       aria-labelledby="top-repos-heading"
     >
       <header className="mb-5 flex items-baseline justify-between">
@@ -43,7 +43,7 @@ export function TopReposList({ repos }: TopReposListProps) {
 
       <ul
         role="list"
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         {repos.map((repo, index) => (
           <li key={repo.url} className="flex">

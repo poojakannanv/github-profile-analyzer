@@ -31,13 +31,13 @@ export function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="container px-6 py-16 sm:py-24"
+      className="container py-14 sm:py-20 lg:py-24"
       aria-labelledby="how-it-works-heading"
     >
       <div className="mx-auto max-w-2xl text-center">
         <h2
           id="how-it-works-heading"
-          className="text-3xl font-bold tracking-tight sm:text-4xl"
+          className="text-fluid-section font-bold"
         >
           How it works
         </h2>
@@ -47,7 +47,7 @@ export function HowItWorks() {
         </p>
       </div>
 
-      <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-3">
+      <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:mt-12 sm:grid-cols-3 sm:gap-6">
         {steps.map(({ step, icon: Icon, title, body }) => (
           <article
             key={step}

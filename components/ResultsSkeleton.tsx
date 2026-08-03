@@ -28,10 +28,10 @@ export function ResultsSkeleton() {
 function ProfileCardSkeleton() {
   return (
     <article className="mt-8 overflow-hidden rounded-2xl border border-border bg-card text-left shadow-sm">
-      <div className="p-6 sm:p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-            <Skeleton className="h-20 w-20 rounded-2xl" />
+            <Skeleton className="h-16 w-16 rounded-2xl sm:h-20 sm:w-20" />
             <div className="space-y-2">
               <Skeleton className="h-6 w-44" />
               <Skeleton className="h-3.5 w-28" />
@@ -73,14 +73,14 @@ function ProfileCardSkeleton() {
 function AiSummarySkeleton() {
   return (
     <section className="mt-8 overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card shadow-sm">
-      <header className="flex items-center justify-between border-b border-border/60 px-6 py-3">
+      <header className="flex items-center justify-between border-b border-border/60 px-4 py-3 sm:px-6">
         <div className="inline-flex items-center gap-2">
           <Skeleton className="h-6 w-6 rounded-md" />
           <Skeleton className="h-4 w-36" />
         </div>
         <Skeleton className="h-3 w-28" />
       </header>
-      <div className="space-y-5 px-6 py-5">
+      <div className="space-y-5 px-4 py-5 sm:px-6">
         {Array.from({ length: 3 }).map((_, section) => (
           <div key={section} className="space-y-2">
             <div className="flex items-center gap-2">
@@ -100,27 +100,30 @@ function AiSummarySkeleton() {
 /* -------------------------------------------------------------------------- */
 function LanguageBreakdownSkeleton() {
   return (
-    <section className="mt-6 rounded-xl border border-border bg-card p-6">
-      <header className="mb-6 flex items-baseline justify-between">
+    <section className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6">
+      <header className="mb-5 flex flex-col gap-1 sm:mb-6 sm:flex-row sm:items-baseline sm:justify-between">
         <Skeleton className="h-4 w-44" />
         <Skeleton className="h-3 w-40" />
       </header>
-      <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:gap-8">
-        <div className="relative shrink-0" style={{ width: 220, height: 220 }}>
+      <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:gap-10">
+        <div className="relative aspect-square w-full max-w-[240px] shrink-0">
           <Skeleton className="h-full w-full rounded-full" />
           <div
             aria-hidden="true"
-            className="absolute left-1/2 top-1/2 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-card"
+            className="absolute left-1/2 top-1/2 h-[64%] w-[64%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-card"
           />
         </div>
-        <ul className="grid w-full flex-1 grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
+        <ul className="grid w-full min-w-0 flex-1 grid-cols-1 gap-x-10 gap-y-2.5 2xl:grid-cols-2">
           {Array.from({ length: 6 }).map((_, i) => (
-            <li key={i} className="flex items-center justify-between gap-3">
-              <span className="inline-flex min-w-0 items-center gap-2">
-                <Skeleton className="h-2.5 w-2.5 rounded-full" />
-                <Skeleton className="h-3 w-24" />
-              </span>
-              <Skeleton className="h-3 w-10" />
+            <li key={i}>
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="inline-flex min-w-0 items-center gap-2">
+                  <Skeleton className="h-2.5 w-2.5 rounded-sm" />
+                  <Skeleton className="h-3 w-24" />
+                </span>
+                <Skeleton className="h-3 w-16" />
+              </div>
+              <Skeleton className="mt-1.5 h-1.5 w-full rounded-full" />
             </li>
           ))}
         </ul>
@@ -132,7 +135,7 @@ function LanguageBreakdownSkeleton() {
 /* -------------------------------------------------------------------------- */
 function IndustrySpecialismSkeleton() {
   return (
-    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+    <section className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6">
       <header className="mb-5 flex items-center justify-between">
         <div className="inline-flex items-center gap-2">
           <Skeleton className="h-6 w-6 rounded-md" />
@@ -142,7 +145,7 @@ function IndustrySpecialismSkeleton() {
       </header>
 
       {/* Hero */}
-      <div className="rounded-xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card p-5">
+      <div className="rounded-xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card p-4 sm:p-5">
         <Skeleton className="h-2.5 w-24" />
         <div className="mt-2 flex items-baseline gap-3">
           <Skeleton className="h-7 w-32" />
@@ -153,14 +156,14 @@ function IndustrySpecialismSkeleton() {
       </div>
 
       {/* Affinity bars */}
-      <ol className="mt-6 space-y-2">
+      <ol className="mt-6 grid grid-cols-1 gap-x-8 gap-y-2 lg:grid-cols-2">
         {Array.from({ length: 8 }).map((_, i) => (
           <li key={i}>
             <div className="flex justify-between">
               <Skeleton className="h-3 w-24" />
               <Skeleton className="h-3 w-8" />
             </div>
-            <Skeleton className="mt-1 h-2 w-full rounded-full" />
+            <Skeleton className="mt-1 h-1.5 w-full rounded-full" />
           </li>
         ))}
       </ol>
@@ -189,7 +192,7 @@ function IndustrySpecialismSkeleton() {
 /* -------------------------------------------------------------------------- */
 function SkillGapSkeleton() {
   return (
-    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+    <section className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6">
       <header className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-center gap-2">
           <Skeleton className="h-6 w-6 rounded-md" />
@@ -206,7 +209,7 @@ function SkillGapSkeleton() {
           <Skeleton className="mt-1.5 h-2 w-full rounded-full" />
         </div>
       </header>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
         {Array.from({ length: 5 }).map((_, i) => (
           <li key={i} className="rounded-xl border border-border bg-background p-4">
             <header className="mb-3 flex items-center justify-between">
@@ -235,14 +238,14 @@ function SkillGapSkeleton() {
 function SalaryBandSkeleton() {
   return (
     <section className="mt-6 overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card shadow-sm">
-      <header className="flex items-center justify-between border-b border-border/60 px-6 py-3">
+      <header className="flex items-center justify-between border-b border-border/60 px-4 py-3 sm:px-6">
         <div className="inline-flex items-center gap-2">
           <Skeleton className="h-6 w-6 rounded-md" />
           <Skeleton className="h-4 w-44" />
         </div>
         <Skeleton className="h-3 w-32" />
       </header>
-      <div className="px-6 py-5">
+      <div className="px-4 py-5 sm:px-6">
         {/* Hero band */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-2">
@@ -253,11 +256,11 @@ function SalaryBandSkeleton() {
           <Skeleton className="h-6 w-32 rounded-full" />
         </div>
         {/* Ladder */}
-        <ol className="mt-6 grid grid-cols-5 gap-1.5">
+        <ol className="scroll-track -mx-4 mt-6 flex gap-1.5 px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-5 sm:px-0 sm:pb-0">
           {Array.from({ length: 5 }).map((_, i) => (
             <li
               key={i}
-              className="rounded-lg border border-border bg-background px-2 py-2"
+              className="min-w-[5.25rem] shrink-0 rounded-lg border border-border bg-background px-2 py-2 sm:min-w-0"
             >
               <Skeleton className="h-2.5 w-12" />
               <Skeleton className="mt-1 h-3 w-10" />
@@ -291,7 +294,7 @@ function SalaryBandSkeleton() {
 /* -------------------------------------------------------------------------- */
 function VisaSponsorMatchSkeleton() {
   return (
-    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+    <section className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6">
       <header className="mb-5 flex items-center justify-between">
         <div className="inline-flex items-center gap-2">
           <Skeleton className="h-6 w-6 rounded-md" />
@@ -299,7 +302,7 @@ function VisaSponsorMatchSkeleton() {
         </div>
         <Skeleton className="h-3 w-56" />
       </header>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {Array.from({ length: 6 }).map((_, i) => (
           <li key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4">
             <div className="flex items-start justify-between gap-2">
@@ -336,7 +339,7 @@ function VisaSponsorMatchSkeleton() {
 /* -------------------------------------------------------------------------- */
 function GradSchemeMatcherSkeleton() {
   return (
-    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+    <section className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6">
       <header className="mb-5 flex items-center justify-between">
         <div className="inline-flex items-center gap-2">
           <Skeleton className="h-6 w-6 rounded-md" />
@@ -344,7 +347,7 @@ function GradSchemeMatcherSkeleton() {
         </div>
         <Skeleton className="h-3 w-56" />
       </header>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {Array.from({ length: 6 }).map((_, i) => (
           <li key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-background p-4">
             <div className="flex items-start justify-between gap-2">
@@ -382,14 +385,14 @@ function GradSchemeMatcherSkeleton() {
 /* -------------------------------------------------------------------------- */
 function TopReposListSkeleton() {
   return (
-    <section className="mt-6">
-      <header className="mb-4 flex items-baseline justify-between">
+    <section className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6">
+      <header className="mb-5 flex items-baseline justify-between">
         <Skeleton className="h-4 w-32" />
         <Skeleton className="h-3 w-28" />
       </header>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {Array.from({ length: 6 }).map((_, i) => (
-          <li key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5">
+          <li key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-background p-5">
             <div className="flex items-start justify-between gap-2">
               <Skeleton className="h-4 w-32" />
               <Skeleton className="h-3.5 w-3.5 rounded" />
@@ -423,14 +426,14 @@ function TopReposListSkeleton() {
 function LinkedInSummarySkeleton() {
   return (
     <section className="mt-6 overflow-hidden rounded-2xl border border-[#0a66c2]/30 bg-gradient-to-br from-[#0a66c2]/5 via-card to-card shadow-sm">
-      <header className="flex items-center justify-between border-b border-border/60 px-6 py-3">
+      <header className="flex items-center justify-between border-b border-border/60 px-4 py-3 sm:px-6">
         <div className="inline-flex items-center gap-2">
           <Skeleton className="h-6 w-6 rounded-md" />
           <Skeleton className="h-4 w-36" />
         </div>
         <Skeleton className="h-3 w-56" />
       </header>
-      <div className="space-y-5 px-6 py-5">
+      <div className="space-y-5 px-4 py-5 sm:px-6">
         {/* Headline field */}
         <div>
           <div className="mb-2 flex items-baseline justify-between">

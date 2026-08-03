@@ -9,9 +9,15 @@ const config: Config = {
   theme: {
     container: {
       center: true,
-      padding: "1.5rem",
+      // Tighter gutter on phones so cards keep their usable width at 320px,
+      // roomier on desktop.
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1.5rem",
+        lg: "2rem",
+      },
       screens: {
-        "2xl": "1280px",
+        "2xl": "1536px",
       },
     },
     extend: {
@@ -51,6 +57,25 @@ const config: Config = {
           600: "#4f46e5",
           700: "#4338ca",
         },
+        // Chart tokens. Defined as CSS vars in globals.css so the validated
+        // light and dark steps swap with the theme and never need to be
+        // resolved in JS. See the comment block there before changing any.
+        viz: {
+          1: "var(--viz-1)",
+          2: "var(--viz-2)",
+          3: "var(--viz-3)",
+          4: "var(--viz-4)",
+          5: "var(--viz-5)",
+          6: "var(--viz-6)",
+          other: "var(--viz-other)",
+          track: "var(--viz-track)",
+          fill: "var(--viz-fill)",
+          "fill-muted": "var(--viz-fill-muted)",
+        },
+      },
+      screens: {
+        // Guard rail for the narrowest phones still in use.
+        xs: "400px",
       },
       borderRadius: {
         lg: "var(--radius)",

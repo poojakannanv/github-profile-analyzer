@@ -51,7 +51,7 @@ export function AiSummary({
       className="mt-8 overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card shadow-sm"
       aria-labelledby="ai-summary-heading"
     >
-      <header className="flex items-center justify-between border-b border-border/60 px-6 py-3">
+      <header className="flex items-center justify-between border-b border-border/60 px-4 py-3 sm:px-6">
         <div className="inline-flex items-center gap-2">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
@@ -63,7 +63,7 @@ export function AiSummary({
         <span className="text-xs text-muted-foreground">{providerLabel}</span>
       </header>
 
-      <div className="px-6 py-5 text-sm leading-relaxed text-foreground/90">
+      <div className="px-4 py-5 text-sm leading-relaxed text-foreground/90 sm:px-6">
         <ReactMarkdown
           components={{
             h1: ({ children }) => (

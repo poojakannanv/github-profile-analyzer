@@ -127,7 +127,9 @@ function AnalyzeSectionInner() {
 
   return (
     <div className="w-full">
-      <div className="mx-auto max-w-xl">
+      {/* The search form stays a comfortable reading width at every
+          resolution; only the report below it widens. */}
+      <div className="mx-auto w-full max-w-xl">
         <SearchForm
           onSubmitUsername={analyze}
           disabled={status.kind === "loading"}
@@ -135,36 +137,40 @@ function AnalyzeSectionInner() {
       </div>
 
       {status.kind === "idle" && (
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto w-full max-w-2xl">
           <TrustStrip />
         </div>
       )}
 
       {status.kind === "loading" && (
-        <>
+        <div className="report-width">
           <div
             role="status"
             aria-live="polite"
-            className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground"
+            className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-muted-foreground"
           >
             <Loader2 className="h-4 w-4 animate-spin" />
-            Analysing <span className="font-mono">{status.username}</span>…
+            <span>
+              Analysing <span className="font-mono">{status.username}</span>…
+            </span>
             <span className="text-xs opacity-70">(AI takes ~5s)</span>
           </div>
           <ResultsSkeleton />
-        </>
+        </div>
       )}
 
       {status.kind === "error" && (
-        <ErrorPanel
-          username={status.username}
-          error={status.error}
-          onRetry={retry}
-        />
+        <div className="mx-auto w-full max-w-2xl">
+          <ErrorPanel
+            username={status.username}
+            error={status.error}
+            onRetry={retry}
+          />
+        </div>
       )}
 
       {status.kind === "success" && (
-        <>
+        <div className="report-width">
           <ProfileCard profile={status.profile} topRepos={status.topRepos} />
           <AiSummary
             summary={status.aiSummary}
@@ -191,7 +197,7 @@ function AnalyzeSectionInner() {
             topRepos={status.topRepos}
             languages={status.languages}
           />
-        </>
+        </div>
       )}
     </div>
   );

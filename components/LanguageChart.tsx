@@ -1,112 +1,99 @@
-"use client";
-
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import type { LanguageBreakdown as LanguageBreakdownType } from "@/types/github";
-import { languageColour } from "@/lib/language-colours";
+import { seriesColour } from "@/lib/chart-palette";
+import { formatBytes } from "@/lib/utils";
 
 interface LanguageChartProps {
   languages: LanguageBreakdownType[];
 }
 
+/* Geometry, in viewBox units. r is chosen so the ring's outer edge (r +
+ * strokeWidth/2 = 48) stays inside the 100x100 box. */
+const RADIUS = 40;
+const STROKE = 16;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+
+/* The surface gap between neighbouring segments. ~1 unit reads as the 2px
+ * gap at the sizes this renders at, and it is what separates adjacent
+ * segments — no stroke is drawn around a segment to do that job. */
+const GAP = 1;
+
 /**
- * Donut chart of language usage by bytes.
- * Day 9 deliverable — replaces the Day 8 CSS stacked bar.
+ * Donut of language share — part-to-whole at a glance. The ranked bars beside
+ * it (LanguageBreakdown) carry the precise values, so this never has to be
+ * read exactly.
  *
- * Recharts is client-only so this component is marked "use client" and
- * imported into the (server) LanguageBreakdown section.
+ * Hand-rolled SVG rather than Recharts on purpose. Recharts' ResponsiveContainer
+ * has to measure its parent before it draws, and in this layout it rendered a
+ * correctly-sized 240x240 surface with zero sectors in it once the section
+ * became a flex row at `lg` — a blank chart on every desktop viewport. Plain
+ * SVG with a viewBox has no measurement step: it scales to any width, is
+ * identical server- and client-side, and needs no client JavaScript at all.
  */
 export function LanguageChart({ languages }: LanguageChartProps) {
-  return (
-    <div
-      className="relative mx-auto"
-      style={{ width: 220, height: 220 }}
-    >
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={languages}
-            dataKey="bytes"
-            nameKey="language"
-            cx="50%"
-            cy="50%"
-            innerRadius="62%"
-            outerRadius="100%"
-            paddingAngle={2}
-            strokeWidth={0}
-            isAnimationActive
-          >
-            {languages.map((lang) => (
-              <Cell
-                key={lang.language}
-                fill={languageColour(lang.language)}
-                aria-label={`${lang.language} ${lang.percent.toFixed(1)}%`}
-              />
-            ))}
-          </Pie>
-          <Tooltip
-            cursor={false}
-            content={<ChartTooltip />}
-            wrapperStyle={{ outline: "none" }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+  const top = languages[0];
 
-      {/* Center label — top language */}
-      {languages[0] && (
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
+  // Running offset so each segment starts where the previous one ended.
+  let consumed = 0;
+  const segments = languages.map((lang, index) => {
+    const arc = (lang.percent / 100) * CIRCUMFERENCE;
+    const offset = consumed;
+    consumed += arc;
+    return {
+      lang,
+      colour: seriesColour(lang.language, index),
+      // Never let the gap eat a thin segment entirely.
+      length: Math.max(arc - GAP, 0.4),
+      offset,
+    };
+  });
+
+  return (
+    <div className="relative mx-auto w-[180px] max-w-full sm:w-[210px] lg:w-[240px]">
+      <svg
+        viewBox="0 0 100 100"
+        className="h-auto w-full -rotate-90"
+        role="img"
+        aria-label={
+          top
+            ? `Donut chart of language share. Largest: ${top.language} at ${top.percent.toFixed(1)} percent. Every value is listed in the ranked breakdown beside this chart.`
+            : "Donut chart of language share."
+        }
+      >
+        {segments.map(({ lang, colour, length, offset }) => (
+          <circle
+            key={lang.language}
+            cx={50}
+            cy={50}
+            r={RADIUS}
+            fill="none"
+            stroke={colour}
+            strokeWidth={STROKE}
+            strokeDasharray={`${length} ${CIRCUMFERENCE - length}`}
+            strokeDashoffset={-offset}
+          >
+            <title>{`${lang.language} — ${lang.percent.toFixed(1)}% (${formatBytes(lang.bytes)})`}</title>
+          </circle>
+        ))}
+      </svg>
+
+      {/* Centre figure — the one number the chart leads with. Proportional
+          figures, not tabular: tabular-nums looks loose at this size. */}
+      {top && (
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-[24%] text-center">
           <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
             Top
           </span>
           <span
-            className="mt-0.5 max-w-[60%] truncate text-sm font-semibold text-foreground"
-            title={languages[0].language}
+            className="mt-0.5 w-full truncate text-sm font-semibold text-foreground"
+            title={top.language}
           >
-            {languages[0].language}
+            {top.language}
           </span>
-          <span className="text-xs text-muted-foreground">
-            {languages[0].percent.toFixed(0)}%
+          <span className="text-lg font-semibold leading-tight text-foreground">
+            {top.percent.toFixed(0)}%
           </span>
         </div>
       )}
     </div>
   );
-}
-
-/* ----- Custom tooltip ----- */
-
-interface ChartTooltipProps {
-  active?: boolean;
-  payload?: Array<{
-    payload: LanguageBreakdownType;
-  }>;
-}
-
-function ChartTooltip({ active, payload }: ChartTooltipProps) {
-  if (!active || !payload?.length) return null;
-
-  const lang = payload[0].payload;
-
-  return (
-    <div className="rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-md">
-      <div className="flex items-center gap-2 font-medium text-foreground">
-        <span
-          aria-hidden="true"
-          className="h-2 w-2 rounded-full"
-          style={{ backgroundColor: languageColour(lang.language) }}
-        />
-        {lang.language}
-      </div>
-      <div className="mt-1 font-mono text-muted-foreground">
-        {lang.percent.toFixed(1)}% · {formatBytes(lang.bytes)}
-      </div>
-    </div>
-  );
-}
-
-/* ----- Helpers ----- */
-
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }

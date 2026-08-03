@@ -65,11 +65,14 @@ export function SearchForm({
         </label>
         <Search
           className={cn(
-            "ml-3 h-4 w-4 shrink-0",
+            "ml-2 h-4 w-4 shrink-0 sm:ml-3",
             hasError ? "text-destructive" : "text-muted-foreground",
           )}
           aria-hidden="true"
         />
+        {/* min-w-0 matters: a flex item defaults to min-width:auto, so without
+            it the input refuses to shrink below its placeholder text and
+            pushes the submit button off the edge at 320px. */}
         <input
           id={inputId}
           type="text"
@@ -86,9 +89,14 @@ export function SearchForm({
           disabled={disabled}
           aria-invalid={hasError}
           aria-describedby={hasError ? errorId : undefined}
-          className="flex-1 bg-transparent px-2 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-60"
+          className="min-w-0 flex-1 bg-transparent px-2 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-60"
         />
-        <Button type="submit" size="default" disabled={disabled}>
+        <Button
+          type="submit"
+          size="default"
+          disabled={disabled}
+          className="shrink-0 px-3 sm:px-4"
+        >
           {disabled ? (
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
           ) : (

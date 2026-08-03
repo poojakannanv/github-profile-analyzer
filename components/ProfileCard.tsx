@@ -31,20 +31,20 @@ export function ProfileCard({ profile, topRepos }: ProfileCardProps) {
 
   return (
     <article className="mt-8 overflow-hidden rounded-2xl border border-border bg-card text-left shadow-sm">
-      <div className="p-6 sm:p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         {/* Header: avatar + identity */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end">
+          <div className="flex min-w-0 flex-col items-start gap-4 sm:flex-row sm:items-end">
             <Image
               src={profile.avatarUrl}
               alt={`${profile.login}'s avatar`}
               width={96}
               height={96}
-              className="h-20 w-20 rounded-2xl ring-2 ring-border"
+              className="h-16 w-16 shrink-0 rounded-2xl ring-2 ring-border sm:h-20 sm:w-20"
               unoptimized
             />
             <div className="min-w-0">
-              <h2 className="text-2xl font-bold tracking-tight">
+              <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
                 {profile.name ?? profile.login}
               </h2>
               <a

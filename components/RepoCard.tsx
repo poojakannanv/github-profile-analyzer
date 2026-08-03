@@ -15,12 +15,14 @@ export function RepoCard({ repo, rank }: RepoCardProps) {
   const visibleTopics = repo.topics.slice(0, MAX_TOPICS_VISIBLE);
   const extraTopicCount = repo.topics.length - visibleTopics.length;
 
+  // bg-background, not bg-card: these sit inside a bg-card section, where
+  // card-on-card left the tiles indistinguishable from their container.
   return (
     <a
       href={repo.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-full flex-col rounded-xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+      className="group flex h-full flex-col rounded-xl border border-border bg-background p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:p-5"
       aria-label={`${repo.name} — open on GitHub`}
     >
       {/* Header: name + external icon + optional rank */}

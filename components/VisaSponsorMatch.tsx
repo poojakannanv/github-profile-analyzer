@@ -24,7 +24,7 @@ export function VisaSponsorMatch({ languages }: VisaSponsorMatchProps) {
   if (matches.length === 0) {
     return (
       <section
-        className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-6 text-center"
+        className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-5 text-center sm:p-6"
         aria-labelledby="sponsor-match-empty-heading"
       >
         <Briefcase
@@ -50,7 +50,7 @@ export function VisaSponsorMatch({ languages }: VisaSponsorMatchProps) {
 
   return (
     <section
-      className="mt-6 rounded-xl border border-border bg-card p-6"
+      className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6"
       aria-labelledby="sponsor-match-heading"
     >
       <header className="mb-5 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
@@ -68,7 +68,7 @@ export function VisaSponsorMatch({ languages }: VisaSponsorMatchProps) {
       </header>
 
       <ul
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
         aria-label="Matched UK visa sponsors"
       >
         {matches.map((sponsor) => {
@@ -126,7 +126,7 @@ export function VisaSponsorMatch({ languages }: VisaSponsorMatchProps) {
                   <span className="font-mono">{strength}%</span>
                 </div>
                 <div
-                  className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted"
+                  className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-viz-track"
                   role="progressbar"
                   aria-valuenow={strength}
                   aria-valuemin={0}
@@ -134,8 +134,8 @@ export function VisaSponsorMatch({ languages }: VisaSponsorMatchProps) {
                   aria-label={`${sponsor.name} match strength`}
                 >
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-primary to-purple-500"
-                    style={{ width: `${strength}%` }}
+                    className="h-full rounded-full bg-viz-fill"
+                    style={{ width: `${Math.max(strength, 0.6)}%` }}
                   />
                 </div>
               </div>

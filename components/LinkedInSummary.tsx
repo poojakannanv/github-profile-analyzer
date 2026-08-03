@@ -37,7 +37,7 @@ export function LinkedInSummary({ profile, topRepos, languages }: LinkedInSummar
 
   if (summary.empty) {
     return (
-      <section className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-6 text-center">
+      <section className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-5 text-center sm:p-6">
         <Linkedin className="mx-auto h-6 w-6 text-muted-foreground" aria-hidden="true" />
         <p className="mt-2 text-sm font-semibold text-foreground">
           Not enough profile data
@@ -54,7 +54,7 @@ export function LinkedInSummary({ profile, topRepos, languages }: LinkedInSummar
       className="mt-6 overflow-hidden rounded-2xl border border-[#0a66c2]/30 bg-gradient-to-br from-[#0a66c2]/5 via-card to-card shadow-sm"
       aria-labelledby="linkedin-summary-heading"
     >
-      <header className="flex flex-col gap-1 border-b border-border/60 px-6 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <header className="flex flex-col gap-1 border-b border-border/60 px-4 py-3 sm:px-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="inline-flex items-center gap-2">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#0a66c2] text-white">
             <Linkedin className="h-3.5 w-3.5" aria-hidden="true" />
@@ -68,7 +68,7 @@ export function LinkedInSummary({ profile, topRepos, languages }: LinkedInSummar
         </span>
       </header>
 
-      <div className="space-y-5 px-6 py-5">
+      <div className="space-y-5 px-4 py-5 sm:px-6">
         <Field
           label="Headline"
           helper="LinkedIn caps this at 220 characters"

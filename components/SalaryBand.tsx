@@ -29,7 +29,7 @@ export function SalaryBand({ profile, topRepos }: SalaryBandProps) {
       className="mt-6 overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card shadow-sm"
       aria-labelledby="salary-band-heading"
     >
-      <header className="flex flex-col gap-1 border-b border-border/60 px-6 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <header className="flex flex-col gap-1 border-b border-border/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div className="inline-flex items-center gap-2">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <PoundSterling className="h-3.5 w-3.5" aria-hidden="true" />
@@ -43,36 +43,45 @@ export function SalaryBand({ profile, topRepos }: SalaryBandProps) {
         </span>
       </header>
 
-      <div className="px-6 py-5">
+      <div className="px-4 py-5 sm:px-6">
         {/* Hero band */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">
               Estimated tier
             </p>
-            <p className="mt-1 text-2xl font-bold tracking-tight">
+            {/* The report's lead figure — proportional figures, not tabular,
+                which look loose at this size. */}
+            <p className="mt-1 text-xl font-bold tracking-tight sm:text-2xl">
               {estimate.tier.tier}{" "}
-              <span className="text-base font-medium text-muted-foreground">
+              <span className="text-sm font-medium text-muted-foreground sm:text-base">
                 · {estimate.tier.note.split(" — ")[0]}
               </span>
             </p>
             <p className="mt-1 text-sm text-foreground/80">
-              {formatGbpRange(estimate.londonMin, estimate.londonMax)} ·
-              London base
+              {formatGbpRange(estimate.londonMin, estimate.londonMax)} · London
+              base
             </p>
           </div>
 
           {estimate.sectorBoost.kind !== "none" && (
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-700 dark:text-amber-300">
-              <Sparkles className="h-3 w-3" aria-hidden="true" />
-              {estimate.sectorBoost.label} · +
-              {Math.round(estimate.sectorBoost.uplift * 100)} %
+            <div className="inline-flex w-fit shrink-0 items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-700 dark:text-amber-300">
+              <Sparkles className="h-3 w-3 shrink-0" aria-hidden="true" />
+              <span>
+                {estimate.sectorBoost.label} · +
+                {Math.round(estimate.sectorBoost.uplift * 100)}%
+              </span>
             </div>
           )}
         </div>
 
-        {/* 5-tier ladder */}
-        <ol className="mt-6 grid grid-cols-5 gap-1.5" aria-label="Salary tiers">
+        {/* 5-tier ladder. Five columns don't fit a 320px screen without the
+            tier names truncating, so below `sm` it becomes a horizontal
+            scroll track with readable cells instead. */}
+        <ol
+          className="scroll-track -mx-4 mt-6 flex gap-1.5 px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-5 sm:px-0 sm:pb-0"
+          aria-label="Salary tiers"
+        >
           {estimate.allBands.map((band) => (
             <TierStep
               key={band.tier}
@@ -149,7 +158,7 @@ function TierStep({ band, isCurrent, isReached }: TierStepProps) {
   return (
     <li
       className={
-        "rounded-lg border px-2 py-2 text-center transition-colors " +
+        "min-w-[5.25rem] shrink-0 rounded-lg border px-2 py-2 text-center transition-colors sm:min-w-0 " +
         (isCurrent
           ? "border-primary bg-primary/10"
           : isReached

@@ -33,7 +33,7 @@ export function SkillGap({ languages, topRepos }: SkillGapProps) {
 
   return (
     <section
-      className="mt-6 rounded-xl border border-border bg-card p-6"
+      className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6"
       aria-labelledby="skill-gap-heading"
     >
       <header className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -61,8 +61,12 @@ export function SkillGap({ languages, topRepos }: SkillGapProps) {
               {result.percent}%
             </span>
           </div>
+          {/* Meter: one hue for the fill, a light step of the same scale for
+              the track. A multi-hue gradient here would make the colour
+              change with the value, re-encoding what the length already
+              says. */}
           <div
-            className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-muted"
+            className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-viz-track"
             role="progressbar"
             aria-valuenow={result.percent}
             aria-valuemin={0}
@@ -70,15 +74,17 @@ export function SkillGap({ languages, topRepos }: SkillGapProps) {
             aria-label="Skill coverage"
           >
             <div
-              className="h-full rounded-full bg-gradient-to-r from-primary via-purple-500 to-pink-500"
+              className="h-full rounded-full bg-viz-fill"
               style={{ width: `${result.percent}%` }}
             />
           </div>
         </div>
       </header>
 
+      {/* Five categories: 3+2 on a laptop, all five in one row on a wide
+          monitor rather than leaving a single orphan card. */}
       <ul
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5"
         aria-label="Skill breakdown by category"
       >
         {result.categories.map((cat) => {

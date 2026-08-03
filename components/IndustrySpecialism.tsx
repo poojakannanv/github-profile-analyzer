@@ -23,7 +23,7 @@ export function IndustrySpecialism({ topRepos }: IndustrySpecialismProps) {
 
   if (!result.primary) {
     return (
-      <section className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-6 text-center">
+      <section className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-5 text-center sm:p-6">
         <Compass
           className="mx-auto h-6 w-6 text-muted-foreground"
           aria-hidden="true"
@@ -42,7 +42,7 @@ export function IndustrySpecialism({ topRepos }: IndustrySpecialismProps) {
 
   return (
     <section
-      className="mt-6 rounded-xl border border-border bg-card p-6"
+      className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6"
       aria-labelledby="industry-specialism-heading"
     >
       <header className="mb-5 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
@@ -62,8 +62,12 @@ export function IndustrySpecialism({ topRepos }: IndustrySpecialismProps) {
       {/* Hero: primary specialism */}
       <PrimaryHero result={result} />
 
-      {/* Ranked affinity bars */}
-      <ol className="mt-6 space-y-2" aria-label="Industry affinities ranked">
+      {/* Ranked affinity bars. Eight rows in one column leaves a lot of dead
+          space on a wide monitor, so they split into two columns there. */}
+      <ol
+        className="mt-6 grid grid-cols-1 gap-x-8 gap-y-2 lg:grid-cols-2"
+        aria-label="Industry affinities ranked"
+      >
         {result.ranked.map((score) => (
           <AffinityRow
             key={score.key}
@@ -103,12 +107,14 @@ function PrimaryHero({ result }: { result: IndustrySpecialismResult }) {
   const confTone = confidenceTone(result.primaryConfidence);
 
   return (
-    <div className="rounded-xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card p-5">
+    <div className="rounded-xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card p-4 sm:p-5">
       <p className="text-xs uppercase tracking-wide text-muted-foreground">
         Primary specialism
       </p>
       <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h4 className="text-2xl font-bold tracking-tight">{primary.name}</h4>
+        <h4 className="text-xl font-bold tracking-tight sm:text-2xl">
+          {primary.name}
+        </h4>
         <span
           className={
             "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium " +
@@ -173,8 +179,11 @@ function AffinityRow({ score, isPrimary, isSecondary }: AffinityRowProps) {
           {score.affinity}%
         </span>
       </div>
+      {/* Emphasis, not eight colours: the primary specialism carries the
+          accent, the secondary a lighter step of the same hue, and the rest
+          recede to neutral. The story here is which one is highest. */}
       <div
-        className="mt-1 h-2 w-full overflow-hidden rounded-full bg-muted"
+        className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-viz-track"
         role="progressbar"
         aria-valuenow={score.affinity}
         aria-valuemin={0}
@@ -185,12 +194,12 @@ function AffinityRow({ score, isPrimary, isSecondary }: AffinityRowProps) {
           className={
             "h-full rounded-full transition-all " +
             (isPrimary
-              ? "bg-gradient-to-r from-primary via-purple-500 to-pink-500"
+              ? "bg-viz-fill"
               : isSecondary
-                ? "bg-primary/70"
-                : "bg-primary/30")
+                ? "bg-viz-fill-muted"
+                : "bg-viz-other")
           }
-          style={{ width: `${score.affinity}%` }}
+          style={{ width: `${Math.max(score.affinity, 0.6)}%` }}
         />
       </div>
     </li>

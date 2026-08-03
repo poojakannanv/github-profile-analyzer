@@ -33,6 +33,35 @@
     --ring: 243 75% 58%;
 
     --radius: 0.75rem;
+
+    /* ---------------------------------------------------------------- *
+     * Chart series palette.
+     *
+     * Slots 1-6 are the validated categorical palette, in fixed order.
+     * Verified with the data-viz six checks against this app's light chart
+     * surface (#ffffff, i.e. --card): lightness band, chroma floor, CVD
+     * separation (worst adjacent dE 9.1), normal-vision floor (19.6) all
+     * pass. Aqua/yellow/magenta sit below 3:1 contrast on white, so every
+     * chart using them must ship visible per-item labels or a table view —
+     * the language breakdown does both.
+     *
+     * Order is the colourblind-safety mechanism. Assign slots in sequence
+     * and never cycle: a 7th language folds into the neutral "Other" slot.
+     * --viz-other is deliberately low-chroma; it is the de-emphasis bucket,
+     * not an identity hue, so the chroma floor does not apply to it.
+     * ---------------------------------------------------------------- */
+    --viz-1: #2a78d6; /* blue */
+    --viz-2: #eb6834; /* orange */
+    --viz-3: #1baf7a; /* aqua */
+    --viz-4: #eda100; /* yellow */
+    --viz-5: #e87ba4; /* magenta */
+    --viz-6: #008300; /* green */
+    --viz-other: #94a3b8; /* neutral — "Other" bucket */
+
+    /* Magnitude marks: one hue, light track -> saturated fill. */
+    --viz-track: #e6e9f0;
+    --viz-fill: #4f46e5;
+    --viz-fill-muted: #a5b4fc;
   }
 
   .dark {
@@ -63,6 +92,22 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 243 75% 65%;
+
+    /* Same eight hues re-stepped for the dark chart surface (#020817) —
+     * a selected dark palette, not an automatic flip. Validated as a set:
+     * lightness band, CVD separation (worst adjacent dE 8.4), normal-vision
+     * floor (19.3) and contrast (all >= 3:1) pass. */
+    --viz-1: #3987e5;
+    --viz-2: #d95926;
+    --viz-3: #199e70;
+    --viz-4: #c98500;
+    --viz-5: #d55181;
+    --viz-6: #008300;
+    --viz-other: #64748b;
+
+    --viz-track: #1e293b;
+    --viz-fill: #818cf8;
+    --viz-fill-muted: #4338ca;
   }
 }
 
@@ -76,6 +121,71 @@
   }
   html {
     scroll-behavior: smooth;
+    /* Never let a stray wide child produce a page-level sideways scroll —
+     * wide content scrolls inside its own container instead. */
+    overflow-x: hidden;
+    /* Keeps the sticky header from covering an anchored section. */
+    scroll-padding-top: 4.5rem;
+  }
+  /* Long unbroken strings (repo names, URLs, bios) must never widen a card
+   * past the viewport on a 320px screen. */
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  a {
+    overflow-wrap: break-word;
+  }
+}
+
+@layer components {
+  /* Fluid type — one continuous ramp from 320px to 4K instead of jumping at
+   * breakpoints, so no resolution lands on an awkward in-between size. */
+  .text-fluid-hero {
+    font-size: clamp(2rem, 1.2rem + 4.2vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .text-fluid-lead {
+    font-size: clamp(1rem, 0.92rem + 0.5vw, 1.25rem);
+    line-height: 1.6;
+  }
+  .text-fluid-section {
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  /* The analysis report is wider than the marketing copy: it holds 3-4 card
+   * columns on a desktop monitor but must still collapse cleanly to one. */
+  .report-width {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+  }
+  @media (min-width: 1280px) {
+    .report-width {
+      max-width: 80rem;
+    }
+  }
+  @media (min-width: 1536px) {
+    .report-width {
+      max-width: 96rem;
+    }
+  }
+
+  /* Wide content (the salary ladder) scrolls in its own track rather than
+   * squashing to unreadable columns on a phone. */
+  .scroll-track {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .scroll-track > * {
+    scroll-snap-align: start;
   }
 }
 
