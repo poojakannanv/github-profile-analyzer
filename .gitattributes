@@ -1,0 +1,9 @@
+# Store text files with LF in the repo regardless of which laptop edits them.
+# Working-tree line endings stay whatever your editor prefers.
+* text=auto
+
+# Never touch binaries
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary
