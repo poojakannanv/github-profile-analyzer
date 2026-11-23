@@ -7,6 +7,19 @@
 [![Next.js](https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](./LICENSE)
+[![Live on Vercel](https://img.shields.io/badge/Live_Demo-Vercel-black?logo=vercel)](https://github-profile-analyzer-blush.vercel.app)
+
+**🔗 Live demo: [github-profile-analyzer-blush.vercel.app](https://github-profile-analyzer-blush.vercel.app)**
+
+## 📸 Screenshots
+
+| Landing | Profile card |
+|---|---|
+| ![Landing page with username search](./docs/screenshots/hero.png) | ![Profile card with repo and follower stats](./docs/screenshots/profile-card.png) |
+
+| UK Market Analysis (AI) | Language breakdown and industry specialism |
+|---|---|
+| ![AI-generated UK market analysis with strengths, gaps and next steps](./docs/screenshots/ai-analysis.png) | ![Language breakdown chart and industry specialism detector](./docs/screenshots/charts.png) |
 
 ## 🇬🇧 Why this is different
 
