@@ -26,6 +26,10 @@ Next.js 14, TypeScript, Tailwind + shadcn/ui, Recharts, @octokit/rest, openai SD
 
 This repo lives on a work laptop (feature work and commits) and a personal laptop (running and testing). GitHub is the sync point. Always `git pull` before editing and `git push` at the end of every session, even WIP. After pulling a commit that touched `package.json`, run `npm install`.
 
-## Current state (2026-07-22)
+## Current state (2026-11-24)
 
-Weeks 1-3 of the roadmap are complete, including the Day 12/13 AI summary (aiSummary in the analyze route, AiSummary component with react-markdown) and all five UK superpower features. Next up is Week 4: OG image (Day 22), PDF export (23), hero animation (24), error handling/toasts (25), mobile/SEO audit (26), Vercel deploy (27), README polish (28). Not yet deployed.
+Live at https://github-profile-analyzer-blush.vercel.app (Vercel Hobby, auto-deploys from `main`). That is the public URL; the `-poojakannanv` alias sits behind Vercel login. Roadmap Weeks 1-3 are complete and Week 4 is done except Day 26 (analytics + Lighthouse performance pass) and the LinkedIn launch post.
+
+Shipped in Week 4: generated OG image (`app/opengraph-image.tsx`), PDF export via print stylesheet (`components/ExportPdfButton.tsx` + `@media print` in `globals.css`), typed hero tagline (`components/TypedTagline.tsx`), sitemap/robots/canonical/JSON-LD (`app/sitemap.ts`, `app/robots.ts`, `lib/site.ts`).
+
+Gotchas: Groq retired `llama-3.3-70b-versatile` from the free tier, so `OPENAI_MODEL` is `openai/gpt-oss-120b`. Fine-grained GitHub PATs expire; an expired `GITHUB_TOKEN` surfaces as "Failed to reach the GitHub API". Env var changes in Vercel need a redeploy.

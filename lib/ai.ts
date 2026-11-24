@@ -45,7 +45,7 @@ let client: OpenAI | null = null;
  *   - LM Studio      → http://localhost:1234/v1
  *
  * Combine with `OPENAI_MODEL` to pick the right model for that provider
- * (e.g. `llama-3.3-70b-versatile` for Groq).
+ * (e.g. `openai/gpt-oss-120b` for Groq).
  */
 export function getAiClient(): OpenAI {
   if (client) return client;

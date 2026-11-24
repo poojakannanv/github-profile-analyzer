@@ -41,7 +41,7 @@ Plus the standard analyzer features:
 - **UK Match Score** — 0–100 alignment with current UK Full-Stack / Graduate demand
 - **Skill Gap Analysis** — what to learn next based on UK job postings
 - **Suggested Next Projects** — AI ideas to fill the gaps
-- **Shareable PDF + OG image** — paste straight into a CV or LinkedIn DM
+- **PDF export + share card** — export the full report as a PDF; links unfurl with a generated Open Graph image
 
 ## 🛠️ Tech Stack
 
@@ -85,33 +85,39 @@ This project is built in **28 daily commits** of 30–60 mins each, ending in a 
 
 ```
 github-profile-analyzer/
-├── app/                  # Next.js App Router
-│   ├── layout.tsx
-│   ├── page.tsx          # Landing + analyzer form
-│   ├── globals.css
-│   └── api/
-│       └── analyze/      # API route for GitHub + AI analysis
-├── components/           # React components
-│   ├── Hero.tsx
-│   ├── SearchForm.tsx
-│   ├── ProfileCard.tsx
-│   ├── LanguageChart.tsx
-│   ├── VisaSponsorMatch.tsx     # 🇬🇧 Week 3
-│   ├── GraduateSchemeMatch.tsx  # 🇬🇧 Week 3
-│   ├── SalaryEstimate.tsx       # 🇬🇧 Week 3
-│   ├── SpecialismDetector.tsx   # 🇬🇧 Week 3
-│   └── LinkedinSummary.tsx      # 🇬🇧 Week 3
-├── lib/                  # Helpers
-│   ├── github.ts         # Octokit wrappers
-│   ├── ai.ts             # LLM analysis
-│   ├── validate.ts       # Username validation
-│   ├── uk-market.ts      # UK skill weights & match score
-│   ├── uk-companies.ts   # 🇬🇧 Visa sponsors by stack
-│   ├── uk-schemes.ts     # 🇬🇧 Graduate scheme criteria
-│   ├── uk-salary.ts      # 🇬🇧 Salary bands by role + location
-│   └── uk-specialism.ts  # 🇬🇧 Industry detection patterns
-├── types/                # TypeScript types
-└── public/               # Static assets
+├── app/                      # Next.js App Router
+│   ├── layout.tsx            # Fonts, metadata, theme bootstrap
+│   ├── page.tsx              # Landing + analyzer, JSON-LD
+│   ├── globals.css           # Design tokens, print stylesheet
+│   ├── opengraph-image.tsx   # Generated share card
+│   ├── sitemap.ts / robots.ts
+│   └── api/analyze/          # GitHub + AI analysis endpoint
+├── components/
+│   ├── Hero.tsx, TypedTagline.tsx, SearchForm.tsx
+│   ├── AnalyzeSection.tsx    # Search -> fetch -> report flow
+│   ├── ProfileCard.tsx, AiSummary.tsx
+│   ├── LanguageBreakdown.tsx, LanguageChart.tsx
+│   ├── VisaSponsorMatch.tsx     # 🇬🇧
+│   ├── GradSchemeMatcher.tsx    # 🇬🇧
+│   ├── SalaryBand.tsx           # 🇬🇧
+│   ├── IndustrySpecialism.tsx   # 🇬🇧
+│   ├── SkillGap.tsx             # 🇬🇧
+│   ├── LinkedInSummary.tsx      # 🇬🇧
+│   ├── ExportPdfButton.tsx, ThemeToggle.tsx, Toaster.tsx
+│   └── ui/                   # shadcn/ui primitives
+├── lib/
+│   ├── github.ts             # Octokit wrappers
+│   ├── ai.ts                 # LLM analysis (OpenAI-compatible)
+│   ├── errors.ts             # Client-side error taxonomy
+│   ├── site.ts               # Canonical URL and site copy
+│   ├── uk-sponsors.ts        # 🇬🇧 Visa sponsors by stack
+│   ├── uk-grad-schemes.ts    # 🇬🇧 Graduate scheme criteria
+│   ├── uk-salary.ts          # 🇬🇧 Salary bands by role + location
+│   ├── uk-industries.ts      # 🇬🇧 Industry detection patterns
+│   ├── uk-skills.ts          # 🇬🇧 UK skill demand weights
+│   └── linkedin-summary.ts   # 🇬🇧 LinkedIn headline + About builder
+├── types/                    # TypeScript types
+└── docs/screenshots/         # README images
 ```
 
 ## 📜 Licence

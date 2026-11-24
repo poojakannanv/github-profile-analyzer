@@ -48,13 +48,13 @@ This is the week that makes the project genuinely different from every other Git
 
 | Day | Task | Commit Message |
 |---|---|---|
-| 22 | Dynamic Open Graph image (`opengraph-image.tsx`) for shareability | `feat: dynamic og image for sharing` |
-| 23 | Export full UK report as PDF (`@react-pdf/renderer` or print CSS) | `feat: export profile report as pdf` |
-| 24 | Add Typed.js animation to hero ("Analyse… Improve… Get Hired in the UK") | `feat: add typed.js hero animation` |
-| 25 | Mobile-responsive audit + SEO meta tags + sitemap | `feat: mobile audit and seo` |
+| 22 ✅ | Dynamic Open Graph image (`opengraph-image.tsx`) for shareability | `feat: dynamic og image for sharing` |
+| 23 ✅ | Export full UK report as PDF (print stylesheet, no dependency) | `feat: export profile report as pdf` |
+| 24 ✅ | Typed hero tagline ("Analyse… Improve… Get hired in the UK"), hand-rolled instead of Typed.js | `feat: add typed hero animation` |
+| 25 ✅ | Mobile-responsive audit + SEO meta tags + sitemap | `feat: mobile audit and seo` |
 | 26 | Analytics + performance pass (Lighthouse) | `perf: performance and analytics pass` |
-| 27 | Deploy to Vercel, configure env vars, smoke test | `chore: deploy to production` |
-| 28 | Final README polish + screenshots + LinkedIn post | `docs: finalise readme with screenshots` |
+| 27 ✅ | Deploy to Vercel, configure env vars, smoke test | `chore: deploy to production` |
+| 28 ✅ | Final README polish + screenshots (LinkedIn post still to do) | `docs: finalise readme with screenshots` |
 
 ---
 
