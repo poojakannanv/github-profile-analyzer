@@ -2,6 +2,13 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/lib/site";
 import "./globals.css";
 
 /**
@@ -22,9 +29,11 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GitHub Profile Analyzer | UK Edition",
-  description:
-    "AI-powered GitHub profile analysis tailored for the UK Full-Stack and Graduate Developer market.",
+  // Makes every relative metadata URL absolute, most importantly the
+  // generated og:image, which share-card crawlers refuse when relative.
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   keywords: [
     "github",
     "profile",
@@ -36,10 +45,19 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Pooja Kannan" }],
   openGraph: {
-    title: "GitHub Profile Analyzer | UK Edition",
-    description:
-      "Analyse any GitHub profile against UK Full-Stack and Graduate Developer roles.",
+    title: SITE_TITLE,
+    description: SITE_TAGLINE,
     type: "website",
+    url: "/",
+    siteName: SITE_NAME,
+    locale: "en_GB",
+  },
+  // The image itself comes from app/opengraph-image.tsx; this only asks
+  // X/Twitter to render it as the large card rather than a thumbnail.
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_TAGLINE,
   },
 };
 
