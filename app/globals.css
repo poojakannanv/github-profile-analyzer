@@ -219,6 +219,60 @@
   animation: blob 18s ease-in-out infinite;
 }
 
+/* Print / "Save as PDF" — the report export (see ExportPdfButton).
+ * Site chrome is removed with print:hidden on the components themselves;
+ * this block handles the page-level rules those utilities cannot express. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 12mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+    overflow: visible;
+  }
+  /* Browsers drop backgrounds by default, which would erase every chart bar,
+   * badge and progress track in the report. */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* Use the full sheet rather than the on-screen reading width. */
+  .report-width {
+    max-width: none;
+  }
+  /* Page breaks. The top-level report cards are allowed to split, otherwise
+   * each one jumps to a fresh page and the PDF is half white space. What
+   * must stay whole are the small units inside them: a sponsor card, a
+   * skill row, a list item. And never strand a heading at the bottom of a
+   * page away from its content. */
+  .report-width > * {
+    break-inside: auto;
+  }
+  .report-width > * section,
+  .report-width > * article,
+  .report-width > * li,
+  .report-width > * tr,
+  .report-width > * dl > div {
+    break-inside: avoid;
+  }
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+  /* Horizontal scrollers cannot scroll on paper: let them lay out in full. */
+  .scroll-track {
+    overflow: visible;
+  }
+  /* Shadows and blurs print as grey smudges. */
+  * {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
 /* Respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-blob {

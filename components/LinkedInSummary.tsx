@@ -37,7 +37,7 @@ export function LinkedInSummary({ profile, topRepos, languages }: LinkedInSummar
 
   if (summary.empty) {
     return (
-      <section className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-5 text-center sm:p-6">
+      <section className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 p-5 text-center print:hidden sm:p-6">
         <Linkedin className="mx-auto h-6 w-6 text-muted-foreground" aria-hidden="true" />
         <p className="mt-2 text-sm font-semibold text-foreground">
           Not enough profile data
@@ -51,7 +51,7 @@ export function LinkedInSummary({ profile, topRepos, languages }: LinkedInSummar
 
   return (
     <section
-      className="mt-6 overflow-hidden rounded-2xl border border-[#0a66c2]/30 bg-gradient-to-br from-[#0a66c2]/5 via-card to-card shadow-sm"
+      className="mt-6 overflow-hidden rounded-2xl border border-[#0a66c2]/30 bg-gradient-to-br from-[#0a66c2]/5 via-card to-card shadow-sm print:hidden"
       aria-labelledby="linkedin-summary-heading"
     >
       <header className="flex flex-col gap-1 border-b border-border/60 px-4 py-3 sm:px-6 sm:flex-row sm:items-center sm:justify-between">

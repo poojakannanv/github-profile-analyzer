@@ -15,7 +15,9 @@ import { GradSchemeMatcher } from "@/components/GradSchemeMatcher";
 import { SalaryBand } from "@/components/SalaryBand";
 import { IndustrySpecialism } from "@/components/IndustrySpecialism";
 import { LinkedInSummary } from "@/components/LinkedInSummary";
+import { ExportPdfButton } from "@/components/ExportPdfButton";
 import { ToastProvider, useToast } from "@/components/Toaster";
+import { SITE_URL } from "@/lib/site";
 import {
   classifyHttpError,
   networkError,
@@ -129,7 +131,7 @@ function AnalyzeSectionInner() {
     <div className="w-full">
       {/* The search form stays a comfortable reading width at every
           resolution; only the report below it widens. */}
-      <div className="mx-auto w-full max-w-xl">
+      <div className="mx-auto w-full max-w-xl print:hidden">
         <SearchForm
           onSubmitUsername={analyze}
           disabled={status.kind === "loading"}
@@ -171,6 +173,18 @@ function AnalyzeSectionInner() {
 
       {status.kind === "success" && (
         <div className="report-width">
+          {/* Screen: export control. Print: a title block, since the site
+              header and hero are hidden on paper. */}
+          <div className="mt-6 flex justify-end print:hidden">
+            <ExportPdfButton
+              username={status.profile.login}
+              name={status.profile.name}
+            />
+          </div>
+          <PrintHeader
+            username={status.profile.login}
+            name={status.profile.name}
+          />
           <ProfileCard profile={status.profile} topRepos={status.topRepos} />
           <AiSummary
             summary={status.aiSummary}
@@ -204,6 +218,42 @@ function AnalyzeSectionInner() {
 }
 
 /* -------------------------------------------------------------------------- */
+
+/**
+ * Title block that only exists on paper. Gives an exported PDF the context
+ * the hidden site chrome would otherwise have provided: what this is, who it
+ * is about, when it was generated and where to regenerate it.
+ */
+function PrintHeader({
+  username,
+  name,
+}: {
+  username: string;
+  name: string | null;
+}) {
+  const generated = new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  return (
+    <div className="hidden border-b border-border pb-4 text-left print:block">
+      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        GitHub Profile Analyzer · UK Edition
+      </p>
+      <p className="mt-1 text-2xl font-bold">
+        UK hiring report: {name ?? username}{" "}
+        <span className="font-mono text-base font-normal text-muted-foreground">
+          @{username}
+        </span>
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Generated {generated} · {SITE_URL.replace(/^https?:\/\//, "")}
+      </p>
+    </div>
+  );
+}
 
 interface ErrorPanelProps {
   username: string;
