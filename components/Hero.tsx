@@ -1,4 +1,5 @@
 import { AnalyzeSection } from "@/components/AnalyzeSection";
+import { TypedTagline } from "@/components/TypedTagline";
 
 /**
  * Landing hero — headline, tagline, and the analyse experience.
@@ -34,7 +35,9 @@ export function Hero() {
           </span>
         </h1>
 
-        <p className="text-fluid-lead mt-5 max-w-2xl print:hidden text-pretty text-center text-muted-foreground sm:mt-6">
+        <TypedTagline />
+
+        <p className="text-fluid-lead mt-3 max-w-2xl print:hidden text-pretty text-center text-muted-foreground sm:mt-4">
           Paste any GitHub username and get a UK-tailored hiring report —
           strengths, skill gaps, market-match score, and the next projects to
           build.

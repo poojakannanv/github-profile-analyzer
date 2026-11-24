@@ -273,9 +273,31 @@
   }
 }
 
+/* Typewriter caret for the hero tagline (see TypedTagline) */
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+.typed-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.15em;
+  margin-left: 3px;
+  border-radius: 1px;
+  background: currentColor;
+  animation: caret-blink 1s linear infinite;
+}
+
 /* Respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .animate-blob {
+  .animate-blob,
+  .typed-cursor {
     animation: none;
   }
 }
