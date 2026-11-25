@@ -52,7 +52,7 @@ Plus the standard analyzer features:
 | Styling | Tailwind CSS + shadcn/ui | Rapid, modern, professional |
 | GitHub API | Octokit (REST) | Official, well-typed |
 | AI | OpenAI-compatible (Groq, OpenAI, Together, etc.) | LLM-generated insights — provider-agnostic |
-| Charts | Recharts | Language breakdown visualisation |
+| Charts | Hand-written SVG | Language donut with a colour-vision-safe palette, no chart library |
 | Deploy | Vercel | Free tier, GitHub integration |
 
 ## 🚀 Quick Start

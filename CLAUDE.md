@@ -18,6 +18,7 @@ Next.js 14, TypeScript, Tailwind + shadcn/ui, Recharts, @octokit/rest, openai SD
 
 ## Conventions
 
+- `WALKTHROUGH.md` holds the design decisions and interview notes; keep it in step when a decision changes.
 - Built as a daily roadmap: see `DAILY_ROADMAP.md`. One meaningful commit per day, message style `feat(scope): ...` (conventional commits, scope often `uk` or `ai`).
 - Git author: Pooja Kannan <poojakannanv98@gmail.com>.
 - Key dirs: `app/api/analyze` (single POST endpoint), `components/`, `lib/` (github, ai, uk-* market data), `types/`.
