@@ -1,6 +1,7 @@
 {
   "name": "github-profile-analyzer",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "description": "AI-powered GitHub profile analyzer tailored for the UK Full-Stack & Graduate Developer market.",
   "scripts": {
